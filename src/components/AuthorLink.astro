@@ -25,29 +25,8 @@ if (!author && target) {
 ---
 
 {author ? (
-    <span class="author-link">
+    <span class="author-link author-modal-trigger" data-member={JSON.stringify(author)} style="cursor: pointer;">
         {author.name}
-        <div class="author-tooltip">
-            <div style="display: flex; gap: 1rem; align-items: flex-start;">
-                {author.avatar ? (
-                    <img src={author.avatar} alt={author.name} />
-                ) : (
-                    <img src="https://placehold.co/50?text=User" alt="Avatar" />
-                )}
-                <div>
-                    <h4>{author.name}</h4>
-                    <span class="role">{author.title}</span>
-                </div>
-            </div>
-            
-            {author.bio && <p style="margin-top: 0.5rem;">{author.bio.slice(0, 100)}{author.bio.length > 100 ? '...' : ''}</p>}
-            
-            <div style="margin-top: 0.75rem; padding-top: 0.5rem; border-top: 1px solid #eee; font-size: 0.85rem;">
-                {author.website && <a href={author.website} target="_blank" style="margin-right: 0.75rem;">Website</a>}
-                {author.email && <a href={`mailto:${author.email}`} style="margin-right: 0.75rem;">Email</a>}
-                {author.google_scholar && <a href={author.google_scholar} target="_blank">Scholar</a>}
-            </div>
-        </div>
     </span>
 ) : (
     <span>{nameOrSlug.replace(/[{}]/g, '')}</span>

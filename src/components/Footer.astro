@@ -55,6 +55,100 @@ import { SITE_TITLE } from '../consts';
     </div>
 </footer>
 
+<dialog id="author-modal" class="author-modal">
+    <button id="close-modal" class="close-btn" aria-label="Close modal">&times;</button>
+    <div class="modal-flex">
+        <img id="modal-avatar" src="" alt="Avatar" class="modal-avatar" />
+        <div>
+            <h3 id="modal-name"></h3>
+            <span id="modal-title"></span>
+            <span id="modal-role"></span>
+        </div>
+    </div>
+    <p id="modal-bio"></p>
+    <div id="modal-socials"></div>
+</dialog>
+
+<script>
+    const modal = document.getElementById('author-modal');
+    const closeBtn = document.getElementById('close-modal');
+
+    const modalAvatar = document.getElementById('modal-avatar');
+    const modalName = document.getElementById('modal-name');
+    const modalTitle = document.getElementById('modal-title');
+    const modalRole = document.getElementById('modal-role');
+    const modalBio = document.getElementById('modal-bio');
+    const modalSocials = document.getElementById('modal-socials');
+
+    const initModals = () => {
+        const triggers = document.querySelectorAll('.author-modal-trigger');
+        triggers.forEach(card => {
+            if(card.hasAttribute('data-modal-initialized')) return;
+            card.setAttribute('data-modal-initialized', 'true');
+            card.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const dataRaw = card.getAttribute('data-member');
+                if(!dataRaw) return;
+                const member = JSON.parse(dataRaw);
+                
+                modalName.textContent = member.name;
+                modalTitle.textContent = member.title;
+                modalRole.textContent = member.role;
+                modalBio.textContent = member.bio || 'No description available.';
+
+                if(member.avatar) {
+                    modalAvatar.src = member.avatar;
+                    modalAvatar.style.display = 'block';
+                } else {
+                    modalAvatar.style.display = 'none';
+                }
+
+                let socialHtml = '';
+                if(member.website) socialHtml += `
+                    <a href="${member.website}" target="_blank" aria-label="Website" class="social-icon-btn">
+                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                    </a>`;
+                if(member.google_scholar) socialHtml += `
+                    <a href="${member.google_scholar}" target="_blank" aria-label="Google Scholar" class="social-icon-btn">
+                        <svg fill="currentColor" viewBox="0 0 32 32" width="20" height="20" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14.573 2.729c-0.729 0.484-4.292 2.849-7.917 5.255s-6.589 4.396-6.589 4.422c0 0.026 0.182 0.146 0.406 0.266 0.224 0.13 3.797 2.109 7.953 4.411l7.542 4.193 0.193-0.099c0.109-0.052 2.891-1.641 6.188-3.521l5.99-3.427 0.036 10.599h3.557v-12.401l-4.615-3.094c-6.219-4.167-11.188-7.448-11.307-7.474-0.063-0.010-0.703 0.38-1.438 0.87zM7.141 22.177l0.016 2.672 8.828 5.292 8.891-5.339v-2.641c0-1.458-0.016-2.646-0.031-2.646-0.021 0-1.76 1.042-3.87 2.323l-4.406 2.661-0.578 0.339-1.755-1.052c-1.464-0.875-2.927-1.755-4.385-2.641l-2.672-1.615c-0.031-0.010-0.042 1.177-0.036 2.646z"></path> </g></svg>
+                    </a>`;
+                if(member.email) socialHtml += `
+                    <a href="mailto:${member.email}" aria-label="Email" class="social-icon-btn">
+                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                    </a>`;
+                modalSocials.innerHTML = socialHtml;
+
+                document.body.style.overflow = 'hidden';
+                modal.showModal();
+            });
+        });
+    }
+
+    if(modal) {
+        initModals();
+        
+        closeBtn.addEventListener('click', () => {
+            document.body.style.overflow = '';
+            modal.close();
+        });
+
+        modal.addEventListener('click', (e) => {
+            const dialogDimensions = modal.getBoundingClientRect()
+            if (
+                e.clientX < dialogDimensions.left ||
+                e.clientX > dialogDimensions.right ||
+                e.clientY < dialogDimensions.top ||
+                e.clientY > dialogDimensions.bottom
+            ) {
+                document.body.style.overflow = '';
+                modal.close();
+            }
+        });
+    }
+</script>
+
 <style>
 	.site-footer {
 		background: var(--color-bg-offset);
@@ -163,5 +257,105 @@ import { SITE_TITLE } from '../consts';
         .social-links {
             justify-content: center;
         }
+    }
+
+    /* Modals & Triggers globally */
+    .author-modal {
+        padding: 2.5rem 2rem;
+        border: 1px solid var(--color-border);
+        border-radius: 16px;
+        background: var(--color-bg);
+        color: var(--color-text-main);
+        max-width: 500px;
+        width: 90%;
+        box-shadow: var(--shadow-lg);
+        margin: auto;
+    }
+    .author-modal::backdrop {
+        background: rgba(0,0,0,0.6);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+    }
+    .close-btn {
+        position: absolute;
+        top: 1rem;
+        right: 1.25rem;
+        background: transparent;
+        border: none;
+        font-size: 2rem;
+        cursor: pointer;
+        color: var(--color-text-muted);
+        line-height: 1;
+        padding: 0;
+    }
+    .close-btn:hover {
+        color: var(--color-accent);
+    }
+    .modal-flex {
+        display: flex;
+        gap: 1.5rem;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+    .modal-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+    #modal-name {
+        margin: 0 0 0.25rem 0;
+        font-size: 1.5rem;
+    }
+    #modal-title {
+        color: var(--color-accent);
+        font-size: 1rem;
+        font-weight: 500;
+        display: block;
+    }
+    #modal-role {
+        font-size: 0.85rem;
+        color: var(--color-text-muted);
+        display: block;
+        margin-top: 0.25rem;
+    }
+    #modal-bio {
+        line-height: 1.6;
+        color: var(--color-text-main);
+        margin-bottom: 2rem;
+    }
+    #modal-socials {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    /* Modal Icons styling */
+    .social-icon-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: var(--color-bg-offset);
+        border: 1px solid var(--color-border);
+        color: var(--color-text-muted);
+        transition: all 0.2s ease;
+    }
+    .social-icon-btn:hover {
+        background: var(--color-accent);
+        color: var(--color-bg);
+        border-color: var(--color-accent);
+        transform: translateY(-2px);
+    }
+    
+    .author-link.author-modal-trigger {
+        cursor: pointer;
+        border-bottom: 1px dotted var(--color-accent);
+        transition: opacity 0.2s;
+    }
+    .author-link.author-modal-trigger:hover {
+        opacity: 0.8;
     }
 </style>

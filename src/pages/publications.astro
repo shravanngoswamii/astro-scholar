@@ -121,10 +121,16 @@ const formatAuthor = (auth: Author) => {
                             
 							{entry.fields.doi && <a href={`https://doi.org/${entry.fields.doi}`} target="_blank" style="margin-left: 0.5rem;">DOI</a>}
                             
-                            <details style="display: inline-block; margin-left: 0.5rem;">
+                            <details name="bibtex" style="display: inline-block; margin-left: 0.5rem;">
                                 <summary style="font-size: 0.8rem; cursor: pointer; color: var(--color-accent);">BibTeX</summary>
-                                <div style="position: absolute; background: #fff; border: 1px solid #ddd; padding: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 10; width: 300px; overflow-x: auto;">
-                                    <pre style="margin: 0; font-size: 0.7rem;">{`@${entry.type}{${entry.key},\n  title={${entry.fields.title}},\n  author={${entry.fields.author || ''}},\n  year={${entry.fields.year}}\n}`}</pre>
+                                <div class="bibtex-panel" style="position: absolute; background: var(--color-bg-offset); border: 1px solid var(--color-border); color: var(--color-text-main); padding: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-radius: 8px; z-index: 10; width: 300px; max-height: 250px; overflow-y: auto; overflow-x: auto; margin-top: 0.5rem;">
+                                    <div style="display: flex; justify-content: flex-end; margin-bottom: 8px;">
+                                        <button class="copy-bibtex-btn" data-bibtex={`@${entry.type}{${entry.key},\n  title={${entry.fields.title}},\n  author={${entry.fields.author || ''}},\n  year={${entry.fields.year}}\n}`} style="background: none; border: none; cursor: pointer; color: var(--color-text-muted); font-size: 0.75rem; display: flex; align-items: center; gap: 4px; padding: 0;">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                            <span class="copy-text">Copy</span>
+                                        </button>
+                                    </div>
+                                    <pre style="margin: 0; font-size: 0.7rem; white-space: pre-wrap; word-break: break-all;">{`@${entry.type}{${entry.key},\n  title={${entry.fields.title}},\n  author={${entry.fields.author || ''}},\n  year={${entry.fields.year}}\n}`}</pre>
                                 </div>
                             </details>
 						</div>
@@ -137,5 +143,44 @@ const formatAuthor = (auth: Author) => {
 			</div>
 		</main>
 		<Footer />
+
+		<script>
+            // Ensure only one BibTeX panel is open at a time (fallback for browsers without 'name' attr support)
+			const detailsElements = document.querySelectorAll('details[name="bibtex"]');
+			detailsElements.forEach(details => {
+				details.addEventListener('toggle', () => {
+					if (details.hasAttribute('open')) {
+						detailsElements.forEach(other => {
+							if (other !== details && other.hasAttribute('open')) {
+								other.removeAttribute('open');
+							}
+						});
+					}
+				});
+			});
+
+            // Copy to clipboard functionality
+			const copyBtns = document.querySelectorAll('.copy-bibtex-btn');
+			copyBtns.forEach(btn => {
+				btn.addEventListener('click', async (e) => {
+					e.preventDefault(); // prevent details from toggling if button triggers
+					const bibtex = btn.getAttribute('data-bibtex');
+					const textSpan = btn.querySelector('.copy-text');
+					if (bibtex && textSpan) {
+						try {
+							await navigator.clipboard.writeText(bibtex);
+							textSpan.textContent = 'Copied!';
+                            btn.setAttribute('style', 'background: none; border: none; cursor: pointer; color: var(--color-accent); font-size: 0.75rem; display: flex; align-items: center; gap: 4px; padding: 0;');
+							setTimeout(() => {
+								textSpan.textContent = 'Copy';
+                                btn.setAttribute('style', 'background: none; border: none; cursor: pointer; color: var(--color-text-muted); font-size: 0.75rem; display: flex; align-items: center; gap: 4px; padding: 0;');
+							}, 2000);
+						} catch (err) {
+							console.error('Failed to copy', err);
+						}
+					}
+				});
+			});
+		</script>
 	</body>
 </html>

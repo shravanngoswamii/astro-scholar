@@ -27,7 +27,7 @@ const alumni = authorsData
 			<h2>Current Members</h2>
 			<div class="grid-3">
 				{currentMembers.length > 0 ? currentMembers.map((member) => (
-					<div class="team-card">
+					<div class="team-card interactive-card author-modal-trigger" data-member={JSON.stringify(member)}>
 						{member.avatar ? (
 							<img 
 								src={member.avatar} 
@@ -39,11 +39,7 @@ const alumni = authorsData
 						)}
 						<span class="team-name">{member.name}</span>
 						<span class="team-role">{member.title}</span>
-						<span style="font-size: 0.85rem; color: #666; display: block; margin-top: 4px;">{member.role}</span>
-						
-						<div style="margin-top: 0.5rem; font-size: 0.9rem;">
-							{member.website && <a href={member.website} target="_blank">Website</a>}
-						</div>
+						<span style="font-size: 0.85rem; color: var(--color-text-muted); display: block; margin-top: 4px;">{member.role}</span>
 					</div>
 				)) : <p>No current members found.</p>}
 			</div>
@@ -53,16 +49,17 @@ const alumni = authorsData
 					<h2>Alumni</h2>
 					<div class="grid-3">
 						{alumni.map((member) => (
-							<div class="team-card">
+							<div class="team-card interactive-card author-modal-trigger" data-member={JSON.stringify(member)}>
 								<span class="team-name">{member.name}</span>
 								<span class="team-role">{member.title}</span>
-								{member.website && <div style="margin-top: 0.5rem;"><a href={member.website} target="_blank">Now at...</a></div>}
+								<span style="font-size: 0.85rem; color: var(--color-text-muted); display: block; margin-top: 4px;">{member.role}</span>
 							</div>
 						))}
 					</div>
 				</>
 			)}
 		</main>
+
 		<Footer />
 	</body>
 </html>
