@@ -1,6 +1,7 @@
 ---
 const today = new Date();
 import { SITE_TITLE } from '../consts';
+import Search from './Search.astro';
 ---
 
 <footer class="site-footer">
@@ -54,6 +55,8 @@ import { SITE_TITLE } from '../consts';
         </div>
     </div>
 </footer>
+
+<Search />
 
 <dialog id="author-modal" class="author-modal">
     <button id="close-modal" class="close-btn" aria-label="Close modal">&times;</button>

@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "postbuild": "pagefind --site dist",
     "preview": "astro preview",
     "astro": "astro"
   },
@@ -12,8 +13,15 @@
     "@astrojs/mdx": "^4.3.13",
     "@astrojs/rss": "^4.0.15",
     "@astrojs/sitemap": "^3.7.0",
+    "@resvg/resvg-js": "^2.6.2",
     "astro": "^5.16.15",
     "bibliography": "^0.1.0",
+    "satori": "^0.25.0",
+    "satori-html": "^0.3.2",
     "sharp": "^0.34.3"
+  },
+  "devDependencies": {
+    "@pagefind/default-ui": "^1.4.0",
+    "pagefind": "^1.4.0"
   }
 }
