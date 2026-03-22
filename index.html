@@ -1,92 +1,34 @@
 <!DOCTYPE html><html lang="en" data-astro-cid-j7pv25f6> <head><meta charset="utf-8"><script>
 	(() => {
-		/** @typedef {'light' | 'dark'} Theme */
-		/** @typedef {Window & typeof globalThis & { __setPreferredTheme?: (theme: Theme) => Theme }} ThemeWindow */
-
 		const root = document.documentElement;
-		const themeWindow = /** @type {ThemeWindow} */ (window);
-		const darkBackground = '#0f172a';
-		const lightBackground = '#ffffff';
-
-		/** @type {(theme: Theme | string | null | undefined) => Theme} */
 		const paintTheme = (theme) => {
-			const resolvedTheme = theme === 'dark' ? 'dark' : 'light';
-			const backgroundColor = resolvedTheme === 'dark' ? darkBackground : lightBackground;
-
-			root.setAttribute('data-theme', resolvedTheme);
-			root.style.backgroundColor = backgroundColor;
-			root.style.colorScheme = resolvedTheme;
-
-			if (document.body) {
-				document.body.style.backgroundColor = backgroundColor;
-			}
-
-			return resolvedTheme;
+			const dark = theme === 'dark';
+			root.setAttribute('data-theme', dark ? 'dark' : 'light');
+			root.style.backgroundColor = dark ? '#0f172a' : '#ffffff';
+			root.style.colorScheme = dark ? 'dark' : 'light';
 		};
-
-		/** @type {Theme} */
 		let theme = 'light';
-
 		try {
-			const storedTheme = localStorage.getItem('theme');
-			if (storedTheme === 'dark' || storedTheme === 'light') {
-				theme = storedTheme;
-			} else if (themeWindow.matchMedia('(prefers-color-scheme: dark)').matches) {
-				theme = 'dark';
-			}
+			const s = localStorage.getItem('theme');
+			if (s === 'dark' || s === 'light') theme = s;
+			else if (matchMedia('(prefers-color-scheme: dark)').matches) theme = 'dark';
 		} catch {
-			if (themeWindow.matchMedia('(prefers-color-scheme: dark)').matches) {
-				theme = 'dark';
-			}
+			if (matchMedia('(prefers-color-scheme: dark)').matches) theme = 'dark';
 		}
-
-		/** @type {(nextTheme: Theme) => Theme} */
-		themeWindow.__setPreferredTheme = (nextTheme) => {
-			const resolvedTheme = paintTheme(nextTheme);
-			root.setAttribute('data-theme-ready', 'true');
-			return resolvedTheme;
-		};
-
 		paintTheme(theme);
-
-		if (!document.body) {
-			document.addEventListener(
-				'DOMContentLoaded',
-				() => {
-					paintTheme(root.getAttribute('data-theme'));
-				},
-				{ once: true }
-			);
-		}
-
-		const markReady = () => root.setAttribute('data-theme-ready', 'true');
-		if (typeof themeWindow.requestAnimationFrame === 'function') {
-			themeWindow.requestAnimationFrame(() => themeWindow.requestAnimationFrame(markReady));
-		} else {
-			setTimeout(markReady, 0);
-		}
+		root.setAttribute('data-theme-ready', 'true');
+		window.__setPreferredTheme = paintTheme;
 	})();
 </script><style>
-	html,
-	body {
-		min-height: 100%;
-		background-color: #ffffff;
+	html, body { min-height: 100%; background-color: #ffffff; }
+	@media (prefers-color-scheme: dark) {
+		html:not([data-theme='light']), html:not([data-theme='light']) body { background-color: #0f172a; }
 	}
-
-	html[data-theme='light'],
-	html[data-theme='light'] body {
-		background-color: #ffffff;
-		color-scheme: light;
-	}
-
-	html[data-theme='dark'],
-	html[data-theme='dark'] body {
-		background-color: #0f172a;
-		color-scheme: dark;
-	}
-</style><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/Academic-Portfolio/favicon.svg"><link rel="sitemap" href="/Academic-Portfolio/sitemap-index.xml"><link rel="alternate" type="application/rss+xml" title="Friedrich Nietzsche" href="https://shravangoswami.com/rss.xml"><meta name="generator" content="Astro v5.16.15"><meta name="color-scheme" content="light dark"><link rel="preload" href="/Academic-Portfolio/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin><link rel="preload" href="/Academic-Portfolio/fonts/atkinson-bold.woff" as="font" type="font/woff" crossorigin><link rel="canonical" href="https://shravangoswami.com/Academic-Portfolio"><title>Friedrich Nietzsche</title><meta name="title" content="Friedrich Nietzsche"><meta name="description" content="The academic portfolio of Friedrich Nietzsche."><meta property="og:type" content="website"><meta property="og:url" content="https://shravangoswami.com/Academic-Portfolio"><meta property="og:title" content="Friedrich Nietzsche"><meta property="og:description" content="The academic portfolio of Friedrich Nietzsche."><meta property="og:image" content="https://shravangoswami.com/Academic-Portfolio/og.png"><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://shravangoswami.com/Academic-Portfolio"><meta property="twitter:title" content="Friedrich Nietzsche"><meta property="twitter:description" content="The academic portfolio of Friedrich Nietzsche."><meta property="twitter:image" content="https://shravangoswami.com/Academic-Portfolio/og.png"><link rel="stylesheet" href="/Academic-Portfolio/_astro/about.Ck4htx0V.css">
+	html[data-theme='dark'], html[data-theme='dark'] body { background-color: #0f172a; color-scheme: dark; }
+	html[data-theme='light'], html[data-theme='light'] body { background-color: #ffffff; color-scheme: light; }
+</style><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/Academic-Portfolio/favicon.svg"><link rel="sitemap" href="/Academic-Portfolio/sitemap-index.xml"><link rel="alternate" type="application/rss+xml" title="Friedrich Nietzsche" href="https://shravangoswami.com/rss.xml"><meta name="generator" content="Astro v5.16.15"><meta name="color-scheme" content="light dark"><link rel="preload" href="/Academic-Portfolio/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin><link rel="preload" href="/Academic-Portfolio/fonts/atkinson-bold.woff" as="font" type="font/woff" crossorigin><link rel="canonical" href="https://shravangoswami.com/Academic-Portfolio"><title>Friedrich Nietzsche</title><meta name="title" content="Friedrich Nietzsche"><meta name="description" content="The academic portfolio of Friedrich Nietzsche."><meta property="og:type" content="website"><meta property="og:url" content="https://shravangoswami.com/Academic-Portfolio"><meta property="og:title" content="Friedrich Nietzsche"><meta property="og:description" content="The academic portfolio of Friedrich Nietzsche."><meta property="og:image" content="https://shravangoswami.com/Academic-Portfolio/og.png"><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://shravangoswami.com/Academic-Portfolio"><meta property="twitter:title" content="Friedrich Nietzsche"><meta property="twitter:description" content="The academic portfolio of Friedrich Nietzsche."><meta property="twitter:image" content="https://shravangoswami.com/Academic-Portfolio/og.png"><link rel="stylesheet" href="/Academic-Portfolio/_astro/about.CT0iYe2f.css">
 <style>.hero[data-astro-cid-j7pv25f6]{display:flex;align-items:center;gap:4rem;padding:4rem 0;margin-bottom:2rem}.hero-content[data-astro-cid-j7pv25f6]{flex:3}.hero-image[data-astro-cid-j7pv25f6]{flex:2;text-align:center;position:relative}.hero-image[data-astro-cid-j7pv25f6] img[data-astro-cid-j7pv25f6]{width:280px;height:280px;object-fit:cover;border-radius:50%;border:6px solid var(--color-bg);box-shadow:0 0 0 1px var(--color-border),var(--shadow-lg)}.pub-mini-item[data-astro-cid-j7pv25f6]{margin-bottom:1.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--color-border)}.pub-mini-item[data-astro-cid-j7pv25f6]:last-child{border-bottom:none;margin-bottom:0}.pub-title[data-astro-cid-j7pv25f6]{font-weight:700;color:var(--color-text-main);display:block;margin-bottom:.25rem;font-family:var(--font-serif);font-size:1.1rem}.pub-meta[data-astro-cid-j7pv25f6]{font-size:.9rem;color:var(--color-text-muted)}.hero-buttons[data-astro-cid-j7pv25f6]{display:flex;gap:1rem;flex-wrap:wrap}@media(max-width:768px){.hero[data-astro-cid-j7pv25f6]{flex-direction:column-reverse;text-align:center;padding:2rem 0;gap:2rem}.hero-image[data-astro-cid-j7pv25f6] img[data-astro-cid-j7pv25f6]{width:200px;height:200px}.hero-buttons[data-astro-cid-j7pv25f6]{justify-content:center}}
-</style></head> <body data-astro-cid-j7pv25f6> <header data-astro-cid-3ef6ksr2> <nav data-astro-cid-3ef6ksr2> <h2 data-astro-cid-3ef6ksr2><a href="/Academic-Portfolio/" data-astro-cid-3ef6ksr2>Friedrich Nietzsche</a></h2> <div class="internal-links" data-astro-cid-3ef6ksr2> <a href="/Academic-Portfolio/" class="active" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Home </a>  <a href="/Academic-Portfolio/publications" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Publications </a>  <a href="/Academic-Portfolio/projects" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Projects </a>  <a href="/Academic-Portfolio/team" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Team </a>  <a href="/Academic-Portfolio/blog" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> News </a>  <a href="https://shravangoswami.com/resume.pdf" target="_blank" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg rel="noopener noreferrer"> CV </a>  </div> <div class="header-actions" data-astro-cid-3ef6ksr2> <button id="search-toggle" aria-label="Search site" data-astro-cid-3ef6ksr2> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-3ef6ksr2><circle cx="11" cy="11" r="8" data-astro-cid-3ef6ksr2></circle><line x1="21" y1="21" x2="16.65" y2="16.65" data-astro-cid-3ef6ksr2></line></svg> </button> <button id="theme-toggle" aria-label="Toggle Dark Mode" data-astro-cid-3ef6ksr2> <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-3ef6ksr2><circle cx="12" cy="12" r="5" data-astro-cid-3ef6ksr2></circle><line x1="12" y1="1" x2="12" y2="3" data-astro-cid-3ef6ksr2></line><line x1="12" y1="21" x2="12" y2="23" data-astro-cid-3ef6ksr2></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" data-astro-cid-3ef6ksr2></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" data-astro-cid-3ef6ksr2></line><line x1="1" y1="12" x2="3" y2="12" data-astro-cid-3ef6ksr2></line><line x1="21" y1="12" x2="23" y2="12" data-astro-cid-3ef6ksr2></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" data-astro-cid-3ef6ksr2></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" data-astro-cid-3ef6ksr2></line></svg> <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-3ef6ksr2><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" data-astro-cid-3ef6ksr2></path></svg> </button> <button id="menu-toggle" aria-label="Toggle Menu" data-astro-cid-3ef6ksr2> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-3ef6ksr2><line x1="3" y1="12" x2="21" y2="12" data-astro-cid-3ef6ksr2></line><line x1="3" y1="6" x2="21" y2="6" data-astro-cid-3ef6ksr2></line><line x1="3" y1="18" x2="21" y2="18" data-astro-cid-3ef6ksr2></line></svg> </button> </div> </nav> <div id="mobile-menu" class="mobile-menu hidden" data-astro-cid-3ef6ksr2> <a href="/Academic-Portfolio/" data-astro-cid-3ef6ksr2>Home</a> <a href="/Academic-Portfolio/publications" data-astro-cid-3ef6ksr2>Publications</a> <a href="/Academic-Portfolio/projects" data-astro-cid-3ef6ksr2>Projects</a> <a href="/Academic-Portfolio/team" data-astro-cid-3ef6ksr2>Team</a> <a href="/Academic-Portfolio/blog" data-astro-cid-3ef6ksr2>News</a> <a href="https://shravangoswami.com/resume.pdf" target="_blank" data-astro-cid-3ef6ksr2 rel="noopener noreferrer">CV</a> </div> </header> <script type="module">const c=window,d=n=>{const t=document.documentElement,e=n==="dark"?"dark":"light",o=e==="dark"?"#0f172a":"#ffffff";return t.setAttribute("data-theme",e),t.setAttribute("data-theme-ready","true"),t.style.backgroundColor=o,t.style.colorScheme=e,document.body?.style.setProperty("background-color",o),e},l=()=>{const e=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";typeof c.__setPreferredTheme=="function"?c.__setPreferredTheme(e):d(e),localStorage.setItem("theme",e)},m=()=>{document.getElementById("mobile-menu")?.classList.toggle("hidden")},r=()=>{document.dispatchEvent(new CustomEvent("open-search"))};document.getElementById("theme-toggle")?.addEventListener("click",l);document.getElementById("menu-toggle")?.addEventListener("click",m);document.getElementById("search-toggle")?.addEventListener("click",r);</script>  <main data-astro-cid-j7pv25f6> <section class="hero" data-astro-cid-j7pv25f6> <div class="hero-content" data-astro-cid-j7pv25f6> <h1 style="margin-bottom: 0.5rem; font-size: 3rem;" data-astro-cid-j7pv25f6>Friedrich Nietzsche</h1> <h4 style="font-weight: 400; color: var(--color-text-muted); margin-bottom: 1.5rem; font-family: var(--font-sans); text-transform: uppercase; letter-spacing: 0.05em; font-size: 1rem;" data-astro-cid-j7pv25f6>
+</style></head> <body data-astro-cid-j7pv25f6> <header data-astro-cid-3ef6ksr2> <nav data-astro-cid-3ef6ksr2> <h2 data-astro-cid-3ef6ksr2><a href="/Academic-Portfolio/" data-astro-cid-3ef6ksr2>Friedrich Nietzsche</a></h2> <div class="internal-links" data-astro-cid-3ef6ksr2> <a href="/Academic-Portfolio/" class="active" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Home </a>  <a href="/Academic-Portfolio/publications" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Publications </a>  <a href="/Academic-Portfolio/projects" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Projects </a>  <a href="/Academic-Portfolio/team" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Team </a>  <a href="/Academic-Portfolio/blog" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> News </a>  <a href="https://shravangoswami.com/resume.pdf" target="_blank" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg rel="noopener noreferrer"> CV </a>  </div> <div class="header-actions" data-astro-cid-3ef6ksr2> <button id="search-toggle" aria-label="Search site" data-astro-cid-3ef6ksr2> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-3ef6ksr2><circle cx="11" cy="11" r="8" data-astro-cid-3ef6ksr2></circle><line x1="21" y1="21" x2="16.65" y2="16.65" data-astro-cid-3ef6ksr2></line></svg> </button> <button id="theme-toggle" aria-label="Toggle Dark Mode" data-astro-cid-3ef6ksr2> <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-3ef6ksr2><circle cx="12" cy="12" r="5" data-astro-cid-3ef6ksr2></circle><line x1="12" y1="1" x2="12" y2="3" data-astro-cid-3ef6ksr2></line><line x1="12" y1="21" x2="12" y2="23" data-astro-cid-3ef6ksr2></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" data-astro-cid-3ef6ksr2></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" data-astro-cid-3ef6ksr2></line><line x1="1" y1="12" x2="3" y2="12" data-astro-cid-3ef6ksr2></line><line x1="21" y1="12" x2="23" y2="12" data-astro-cid-3ef6ksr2></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" data-astro-cid-3ef6ksr2></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" data-astro-cid-3ef6ksr2></line></svg> <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-3ef6ksr2><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" data-astro-cid-3ef6ksr2></path></svg> </button> <button id="menu-toggle" aria-label="Toggle Menu" data-astro-cid-3ef6ksr2> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-3ef6ksr2><line x1="3" y1="12" x2="21" y2="12" data-astro-cid-3ef6ksr2></line><line x1="3" y1="6" x2="21" y2="6" data-astro-cid-3ef6ksr2></line><line x1="3" y1="18" x2="21" y2="18" data-astro-cid-3ef6ksr2></line></svg> </button> </div> </nav> <div id="mobile-menu" class="mobile-menu hidden" data-astro-cid-3ef6ksr2> <a href="/Academic-Portfolio/" data-astro-cid-3ef6ksr2>Home</a> <a href="/Academic-Portfolio/publications" data-astro-cid-3ef6ksr2>Publications</a> <a href="/Academic-Portfolio/projects" data-astro-cid-3ef6ksr2>Projects</a> <a href="/Academic-Portfolio/team" data-astro-cid-3ef6ksr2>Team</a> <a href="/Academic-Portfolio/blog" data-astro-cid-3ef6ksr2>News</a> <a href="https://shravangoswami.com/resume.pdf" target="_blank" data-astro-cid-3ef6ksr2 rel="noopener noreferrer">CV</a> </div> </header> <script type="module">document.getElementById("theme-toggle")?.addEventListener("click",()=>{const e=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";window.__setPreferredTheme?.(e),localStorage.setItem("theme",e)});document.getElementById("menu-toggle")?.addEventListener("click",()=>{document.getElementById("mobile-menu")?.classList.toggle("hidden")});document.getElementById("search-toggle")?.addEventListener("click",()=>{document.dispatchEvent(new CustomEvent("open-search"))});</script>  <main data-astro-cid-j7pv25f6> <section class="hero" data-astro-cid-j7pv25f6> <div class="hero-content" data-astro-cid-j7pv25f6> <h1 style="margin-bottom: 0.5rem; font-size: 3rem;" data-astro-cid-j7pv25f6>Friedrich Nietzsche</h1> <h4 style="font-weight: 400; color: var(--color-text-muted); margin-bottom: 1.5rem; font-family: var(--font-sans); text-transform: uppercase; letter-spacing: 0.05em; font-size: 1rem;" data-astro-cid-j7pv25f6>
 Professor of Philosophy<br data-astro-cid-j7pv25f6>
 Institute for Advanced Study
 </h4> <p style="font-size: 1.1rem; line-height: 1.7; margin-bottom: 2rem;" data-astro-cid-j7pv25f6>
