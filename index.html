@@ -16,7 +16,7 @@
 			if (matchMedia('(prefers-color-scheme: dark)').matches) theme = 'dark';
 		}
 		paintTheme(theme);
-		document.addEventListener('DOMContentLoaded', () => root.setAttribute('data-theme-ready', 'true'), { once: true });
+		window.addEventListener('load', () => root.setAttribute('data-theme-ready', 'true'), { once: true });
 		window.__setPreferredTheme = paintTheme;
 	})();
 </script><style>
