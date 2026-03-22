@@ -53,7 +53,7 @@
 	src: url("/fonts/atkinson-regular.woff") format("woff");
 	font-weight: 400;
 	font-style: normal;
-	font-display: block;
+	font-display: swap;
 }
 
 @font-face {
@@ -61,7 +61,7 @@
 	src: url("/fonts/atkinson-bold.woff") format("woff");
 	font-weight: 700;
 	font-style: normal;
-	font-display: block;
+	font-display: swap;
 }
 
 html {
@@ -82,6 +82,7 @@ body {
 	line-height: 1.6;
 	margin: 0;
 	font-size: 18px;
+	transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 main {
