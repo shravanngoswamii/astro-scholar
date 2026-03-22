@@ -66,22 +66,13 @@ const imageUrl = typeof image === 'string'
 <style is:inline>
 	/* CSS variables inline — available immediately in all modes (dev + prod), before any external CSS */
 	:root {
-		--font-sans: 'Atkinson', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-		--font-serif: 'Georgia', 'Times New Roman', Times, serif;
 		--color-bg: #ffffff;
 		--color-bg-offset: #ffffff;
 		--color-bg-header: rgba(255, 255, 255, 0.85);
 		--color-text-main: #1a1a1a;
 		--color-text-muted: #555555;
 		--color-accent: #003366;
-		--color-accent-light: #e6f0fa;
 		--color-border: #eaeaea;
-		--color-header-border: rgba(0, 0, 0, 0.08);
-		--color-bg-mobile-menu: rgba(255, 255, 255, 0.95);
-		--max-width: 960px;
-		--radius: 8px;
-		--shadow-md: 0 4px 6px rgba(0, 0, 0, 0.08);
-		--shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
 	}
 	[data-theme='dark'] {
 		--color-bg: #0f172a;
@@ -90,34 +81,20 @@ const imageUrl = typeof image === 'string'
 		--color-text-main: #e2e8f0;
 		--color-text-muted: #94a3b8;
 		--color-accent: #60a5fa;
-		--color-accent-light: #1e3a8a;
 		--color-border: #334155;
-		--color-header-border: rgba(255, 255, 255, 0.1);
-		--color-bg-mobile-menu: rgba(15, 23, 42, 0.95);
-		--shadow-md: 0 4px 6px rgba(0, 0, 0, 0.5);
-		--shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
 	}
 	html, body { min-height: 100%; background-color: #ffffff; }
-	body {
-		margin: 0;
-		font-family: var(--font-sans);
-		background-color: var(--color-bg);
-		color: var(--color-text-main);
-	}
 	@media (prefers-color-scheme: dark) {
 		html:not([data-theme='light']), html:not([data-theme='light']) body { background-color: #0f172a; }
 	}
 	html[data-theme='dark'], html[data-theme='dark'] body { background-color: #0f172a; color-scheme: dark; }
 	html[data-theme='light'], html[data-theme='light'] body { background-color: #ffffff; color-scheme: light; }
-	/* Header: higher specificity (0,1,2) beats scoped rule (0,1,1) — no flash even before component CSS loads */
-	html[data-theme='dark'] header { background: rgba(15, 23, 42, 0.8); }
-	html:not([data-theme='dark']) header { background: rgba(255, 255, 255, 0.85); }
+	/* Critical header layout — prevents FOUC before component CSS loads */
 	header {
 		position: sticky;
 		top: 0;
 		z-index: 100;
-		margin: 0;
-		padding: 0 1rem;
+		padding: 0 1em;
 		backdrop-filter: blur(12px);
 		-webkit-backdrop-filter: blur(12px);
 	}
@@ -125,108 +102,21 @@ const imageUrl = typeof image === 'string'
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		max-width: var(--max-width);
+		max-width: 960px;
 		margin: 0 auto;
 		height: 4.5rem;
 	}
-	header nav h2 {
+	html[data-theme='dark'] header { background: rgba(15, 23, 42, 0.8); }
+	html:not([data-theme='dark']) header { background: rgba(255, 255, 255, 0.85); }
+	/* Critical card backgrounds — prevents white flash in dark mode */
+	.project-card, .interactive-card {
+		background: var(--color-bg-offset);
+		border-color: var(--color-border);
+	}
+	body {
+		background-color: var(--color-bg);
+		color: var(--color-text-main);
 		margin: 0;
-		border: 0;
-		padding: 0;
-		font-family: var(--font-sans);
-		font-size: 1.3em;
-		font-weight: 700;
-		letter-spacing: -0.02em;
-	}
-	header nav h2 a {
-		color: var(--color-text-main);
-		text-decoration: none;
-	}
-	.internal-links {
-		display: flex;
-		gap: 0.25rem;
-	}
-	.internal-links a {
-		display: inline-block;
-		padding: 0.5em 0.75em;
-		border-bottom: 2px solid transparent;
-		color: var(--color-text-main);
-		font-size: 0.95rem;
-		font-weight: 500;
-		text-decoration: none;
-	}
-	.internal-links a.active {
-		color: var(--color-accent);
-		border-bottom-color: var(--color-accent);
-	}
-	.header-actions {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-	}
-	#search-toggle,
-	#theme-toggle,
-	#menu-toggle {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 40px;
-		height: 40px;
-		padding: 0;
-		background: transparent;
-		border: 0;
-		border-radius: 50%;
-		color: var(--color-text-main);
-		cursor: pointer;
-	}
-	#menu-toggle {
-		display: none;
-	}
-	#mobile-menu.hidden,
-	.mobile-menu.hidden {
-		display: none !important;
-	}
-	.mobile-menu {
-		position: absolute;
-		top: calc(100% + 0.5rem);
-		right: 1rem;
-		min-width: 180px;
-		padding: 0.5rem;
-		background: var(--color-bg-mobile-menu);
-		border: 1px solid var(--color-header-border);
-		border-radius: 12px;
-		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
-	}
-	.mobile-menu a {
-		display: block;
-		padding: 0.5rem 0.875rem;
-		color: var(--color-text-main);
-		text-decoration: none;
-	}
-	.moon-icon {
-		display: none;
-	}
-	html[data-theme='dark'] .moon-icon {
-		display: block;
-	}
-	html[data-theme='dark'] .sun-icon {
-		display: none;
-	}
-	.project-card {
-		background: var(--color-bg-offset);
-		border: 1px solid var(--color-border);
-	}
-	.project-image,
-	.project-content-wrapper {
-		background: var(--color-bg-offset);
-	}
-	@media (max-width: 720px) {
-		.internal-links {
-			display: none;
-		}
-		#menu-toggle {
-			display: flex;
-		}
 	}
 	/* Suppress all transitions until page is fully styled */
 	html:not([data-theme-ready]) *, html:not([data-theme-ready]) *::before, html:not([data-theme-ready]) *::after {

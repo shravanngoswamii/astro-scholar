@@ -9,4 +9,7 @@ export default defineConfig({
 	site: 'https://shravangoswami.com',
 	base: '/Academic-Portfolio',
 	integrations: [mdx(), sitemap()],
+	build: {
+		inlineStylesheets: 'always',
+	},
 });
