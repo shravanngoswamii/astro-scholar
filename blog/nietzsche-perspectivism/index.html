@@ -1,33 +1,92 @@
-<!DOCTYPE html><html lang="en" data-astro-cid-bvzihdzo> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/Academic-Portfolio/favicon.svg"><link rel="sitemap" href="/Academic-Portfolio/sitemap-index.xml"><link rel="alternate" type="application/rss+xml" title="Friedrich Nietzsche" href="https://shravangoswami.com/rss.xml"><meta name="generator" content="Astro v5.16.15"><meta name="color-scheme" content="light dark"><script>
-    (() => {
-        const root = document.documentElement;
-        const storedTheme = typeof localStorage !== 'undefined' ? localStorage.getItem('theme') : null;
-        const theme = storedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+<!DOCTYPE html><html lang="en" data-astro-cid-bvzihdzo> <head><meta charset="utf-8"><script>
+	(() => {
+		/** @typedef {'light' | 'dark'} Theme */
+		/** @typedef {Window & typeof globalThis & { __setPreferredTheme?: (theme: Theme) => Theme }} ThemeWindow */
 
-        if (theme === 'dark') {
-            root.setAttribute('data-theme', 'dark');
-        } else {
-            root.removeAttribute('data-theme');
-        }
+		const root = document.documentElement;
+		const themeWindow = /** @type {ThemeWindow} */ (window);
+		const darkBackground = '#0f172a';
+		const lightBackground = '#ffffff';
 
-        root.style.backgroundColor = theme === 'dark' ? '#0f172a' : '#ffffff';
-        root.style.colorScheme = theme;
+		/** @type {(theme: Theme | string | null | undefined) => Theme} */
+		const paintTheme = (theme) => {
+			const resolvedTheme = theme === 'dark' ? 'dark' : 'light';
+			const backgroundColor = resolvedTheme === 'dark' ? darkBackground : lightBackground;
 
-        const markReady = () => {
-            root.setAttribute('data-theme-ready', 'true');
-            root.style.removeProperty('background-color');
-            root.style.removeProperty('color-scheme');
-        };
+			root.setAttribute('data-theme', resolvedTheme);
+			root.style.backgroundColor = backgroundColor;
+			root.style.colorScheme = resolvedTheme;
 
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', markReady, { once: true });
-        } else {
-            markReady();
-        }
-    })();
-</script><link rel="preload" href="/Academic-Portfolio/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin><link rel="preload" href="/Academic-Portfolio/fonts/atkinson-bold.woff" as="font" type="font/woff" crossorigin><link rel="canonical" href="https://shravangoswami.com/Academic-Portfolio/blog/nietzsche-perspectivism/"><title>Perspectivism: The Philosophy of Multiple Truths</title><meta name="title" content="Perspectivism: The Philosophy of Multiple Truths"><meta name="description" content="An exploration of perspectivism and why there are no absolute truths, only interpretations."><meta property="og:type" content="website"><meta property="og:url" content="https://shravangoswami.com/Academic-Portfolio/blog/nietzsche-perspectivism/"><meta property="og:title" content="Perspectivism: The Philosophy of Multiple Truths"><meta property="og:description" content="An exploration of perspectivism and why there are no absolute truths, only interpretations."><meta property="og:image" content="https://shravangoswami.com/Academic-Portfolio/blog/nietzsche-perspectivism.png"><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://shravangoswami.com/Academic-Portfolio/blog/nietzsche-perspectivism/"><meta property="twitter:title" content="Perspectivism: The Philosophy of Multiple Truths"><meta property="twitter:description" content="An exploration of perspectivism and why there are no absolute truths, only interpretations."><meta property="twitter:image" content="https://shravangoswami.com/Academic-Portfolio/blog/nietzsche-perspectivism.png"><link rel="stylesheet" href="/Academic-Portfolio/_astro/about.BC8Z6WEu.css">
+			if (document.body) {
+				document.body.style.backgroundColor = backgroundColor;
+			}
+
+			return resolvedTheme;
+		};
+
+		/** @type {Theme} */
+		let theme = 'light';
+
+		try {
+			const storedTheme = localStorage.getItem('theme');
+			if (storedTheme === 'dark' || storedTheme === 'light') {
+				theme = storedTheme;
+			} else if (themeWindow.matchMedia('(prefers-color-scheme: dark)').matches) {
+				theme = 'dark';
+			}
+		} catch {
+			if (themeWindow.matchMedia('(prefers-color-scheme: dark)').matches) {
+				theme = 'dark';
+			}
+		}
+
+		/** @type {(nextTheme: Theme) => Theme} */
+		themeWindow.__setPreferredTheme = (nextTheme) => {
+			const resolvedTheme = paintTheme(nextTheme);
+			root.setAttribute('data-theme-ready', 'true');
+			return resolvedTheme;
+		};
+
+		paintTheme(theme);
+
+		if (!document.body) {
+			document.addEventListener(
+				'DOMContentLoaded',
+				() => {
+					paintTheme(root.getAttribute('data-theme'));
+				},
+				{ once: true }
+			);
+		}
+
+		const markReady = () => root.setAttribute('data-theme-ready', 'true');
+		if (typeof themeWindow.requestAnimationFrame === 'function') {
+			themeWindow.requestAnimationFrame(() => themeWindow.requestAnimationFrame(markReady));
+		} else {
+			setTimeout(markReady, 0);
+		}
+	})();
+</script><style>
+	html,
+	body {
+		min-height: 100%;
+		background-color: #ffffff;
+	}
+
+	html[data-theme='light'],
+	html[data-theme='light'] body {
+		background-color: #ffffff;
+		color-scheme: light;
+	}
+
+	html[data-theme='dark'],
+	html[data-theme='dark'] body {
+		background-color: #0f172a;
+		color-scheme: dark;
+	}
+</style><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/Academic-Portfolio/favicon.svg"><link rel="sitemap" href="/Academic-Portfolio/sitemap-index.xml"><link rel="alternate" type="application/rss+xml" title="Friedrich Nietzsche" href="https://shravangoswami.com/rss.xml"><meta name="generator" content="Astro v5.16.15"><meta name="color-scheme" content="light dark"><link rel="preload" href="/Academic-Portfolio/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin><link rel="preload" href="/Academic-Portfolio/fonts/atkinson-bold.woff" as="font" type="font/woff" crossorigin><link rel="canonical" href="https://shravangoswami.com/Academic-Portfolio/blog/nietzsche-perspectivism/"><title>Perspectivism: The Philosophy of Multiple Truths</title><meta name="title" content="Perspectivism: The Philosophy of Multiple Truths"><meta name="description" content="An exploration of perspectivism and why there are no absolute truths, only interpretations."><meta property="og:type" content="website"><meta property="og:url" content="https://shravangoswami.com/Academic-Portfolio/blog/nietzsche-perspectivism/"><meta property="og:title" content="Perspectivism: The Philosophy of Multiple Truths"><meta property="og:description" content="An exploration of perspectivism and why there are no absolute truths, only interpretations."><meta property="og:image" content="https://shravangoswami.com/Academic-Portfolio/blog/nietzsche-perspectivism.png"><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://shravangoswami.com/Academic-Portfolio/blog/nietzsche-perspectivism/"><meta property="twitter:title" content="Perspectivism: The Philosophy of Multiple Truths"><meta property="twitter:description" content="An exploration of perspectivism and why there are no absolute truths, only interpretations."><meta property="twitter:image" content="https://shravangoswami.com/Academic-Portfolio/blog/nietzsche-perspectivism.png"><link rel="stylesheet" href="/Academic-Portfolio/_astro/about.Ck4htx0V.css">
 <style>main[data-astro-cid-bvzihdzo]{width:100%;max-width:100%;margin:0}.hero-image[data-astro-cid-bvzihdzo]{width:100%;overflow:hidden}.hero-image[data-astro-cid-bvzihdzo] img[data-astro-cid-bvzihdzo]{display:block;margin:0 auto;border-radius:12px;box-shadow:var(--box-shadow);max-width:100%;height:auto}.prose[data-astro-cid-bvzihdzo]{width:760px;max-width:100%;margin:auto;padding:1rem;color:rgb(var(--gray-dark))}.prose[data-astro-cid-bvzihdzo] p{text-align:justify;hyphens:auto}.title[data-astro-cid-bvzihdzo]{margin-bottom:1em;padding:1em 0;text-align:center;line-height:1}.title[data-astro-cid-bvzihdzo] h1[data-astro-cid-bvzihdzo]{margin:0 0 .5em;font-size:2.2rem}.date[data-astro-cid-bvzihdzo]{margin-bottom:.5em;color:rgb(var(--gray))}.last-updated-on[data-astro-cid-bvzihdzo]{font-style:italic}.blog-authors[data-astro-cid-bvzihdzo]{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;margin-top:.75rem;font-size:.9rem;color:var(--color-text-muted)}.blog-authors[data-astro-cid-bvzihdzo] span[data-astro-cid-bvzihdzo]{font-size:.9rem}@media(max-width:768px){.title[data-astro-cid-bvzihdzo] h1[data-astro-cid-bvzihdzo]{font-size:1.6rem}.prose[data-astro-cid-bvzihdzo]{padding:1rem .5rem}}
-</style></head> <body data-astro-cid-bvzihdzo> <header data-astro-cid-3ef6ksr2> <nav data-astro-cid-3ef6ksr2> <h2 data-astro-cid-3ef6ksr2><a href="/Academic-Portfolio/" data-astro-cid-3ef6ksr2>Friedrich Nietzsche</a></h2> <div class="internal-links" data-astro-cid-3ef6ksr2> <a href="/Academic-Portfolio/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Home </a>  <a href="/Academic-Portfolio/publications" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Publications </a>  <a href="/Academic-Portfolio/projects" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Projects </a>  <a href="/Academic-Portfolio/team" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Team </a>  <a href="/Academic-Portfolio/blog" class="active" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> News </a>  <a href="https://shravangoswami.com/resume.pdf" target="_blank" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg rel="noopener noreferrer"> CV </a>  </div> <div class="header-actions" data-astro-cid-3ef6ksr2> <button id="search-toggle" aria-label="Search site" data-astro-cid-3ef6ksr2> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-3ef6ksr2><circle cx="11" cy="11" r="8" data-astro-cid-3ef6ksr2></circle><line x1="21" y1="21" x2="16.65" y2="16.65" data-astro-cid-3ef6ksr2></line></svg> </button> <button id="theme-toggle" aria-label="Toggle Dark Mode" data-astro-cid-3ef6ksr2> <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-3ef6ksr2><circle cx="12" cy="12" r="5" data-astro-cid-3ef6ksr2></circle><line x1="12" y1="1" x2="12" y2="3" data-astro-cid-3ef6ksr2></line><line x1="12" y1="21" x2="12" y2="23" data-astro-cid-3ef6ksr2></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" data-astro-cid-3ef6ksr2></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" data-astro-cid-3ef6ksr2></line><line x1="1" y1="12" x2="3" y2="12" data-astro-cid-3ef6ksr2></line><line x1="21" y1="12" x2="23" y2="12" data-astro-cid-3ef6ksr2></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" data-astro-cid-3ef6ksr2></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" data-astro-cid-3ef6ksr2></line></svg> <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-3ef6ksr2><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" data-astro-cid-3ef6ksr2></path></svg> </button> <button id="menu-toggle" aria-label="Toggle Menu" data-astro-cid-3ef6ksr2> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-3ef6ksr2><line x1="3" y1="12" x2="21" y2="12" data-astro-cid-3ef6ksr2></line><line x1="3" y1="6" x2="21" y2="6" data-astro-cid-3ef6ksr2></line><line x1="3" y1="18" x2="21" y2="18" data-astro-cid-3ef6ksr2></line></svg> </button> </div> </nav> <div id="mobile-menu" class="mobile-menu hidden" data-astro-cid-3ef6ksr2> <a href="/Academic-Portfolio/" data-astro-cid-3ef6ksr2>Home</a> <a href="/Academic-Portfolio/publications" data-astro-cid-3ef6ksr2>Publications</a> <a href="/Academic-Portfolio/projects" data-astro-cid-3ef6ksr2>Projects</a> <a href="/Academic-Portfolio/team" data-astro-cid-3ef6ksr2>Team</a> <a href="/Academic-Portfolio/blog" data-astro-cid-3ef6ksr2>News</a> <a href="https://shravangoswami.com/resume.pdf" target="_blank" data-astro-cid-3ef6ksr2 rel="noopener noreferrer">CV</a> </div> </header> <script type="module">const n=()=>{const e=document.documentElement,t=e.getAttribute("data-theme")==="dark"?"light":"dark";t==="dark"?e.setAttribute("data-theme","dark"):e.removeAttribute("data-theme"),localStorage.setItem("theme",t)},d=()=>{document.getElementById("mobile-menu")?.classList.toggle("hidden")},c=()=>{document.dispatchEvent(new CustomEvent("open-search"))};document.getElementById("theme-toggle")?.addEventListener("click",n);document.getElementById("menu-toggle")?.addEventListener("click",d);document.getElementById("search-toggle")?.addEventListener("click",c);</script>  <main data-astro-cid-bvzihdzo> <article data-astro-cid-bvzihdzo> <div class="hero-image" data-astro-cid-bvzihdzo> <img width="1020" height="510" src="/Academic-Portfolio/blog/nietzsche-perspectivism.png" alt="Perspectivism: The Philosophy of Multiple Truths" data-astro-cid-bvzihdzo> </div> <div class="prose" data-astro-cid-bvzihdzo> <div class="title" data-astro-cid-bvzihdzo> <div class="date" data-astro-cid-bvzihdzo> <time datetime="2024-01-15T00:00:00.000Z"> Jan 15, 2024 </time>  </div> <h1 data-astro-cid-bvzihdzo>Perspectivism: The Philosophy of Multiple Truths</h1>  <hr data-astro-cid-bvzihdzo> </div>  <p>One of my most profound contributions to philosophy is the concept of perspectivism—the recognition that all knowledge is fundamentally perspectival, shaped by the standpoint of the knower. This challenges the very notion that there exists an objective, God’s-eye view of reality independent of our positions and values.</p>
+</style></head> <body data-astro-cid-bvzihdzo> <header data-astro-cid-3ef6ksr2> <nav data-astro-cid-3ef6ksr2> <h2 data-astro-cid-3ef6ksr2><a href="/Academic-Portfolio/" data-astro-cid-3ef6ksr2>Friedrich Nietzsche</a></h2> <div class="internal-links" data-astro-cid-3ef6ksr2> <a href="/Academic-Portfolio/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Home </a>  <a href="/Academic-Portfolio/publications" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Publications </a>  <a href="/Academic-Portfolio/projects" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Projects </a>  <a href="/Academic-Portfolio/team" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Team </a>  <a href="/Academic-Portfolio/blog" class="active" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> News </a>  <a href="https://shravangoswami.com/resume.pdf" target="_blank" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg rel="noopener noreferrer"> CV </a>  </div> <div class="header-actions" data-astro-cid-3ef6ksr2> <button id="search-toggle" aria-label="Search site" data-astro-cid-3ef6ksr2> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-3ef6ksr2><circle cx="11" cy="11" r="8" data-astro-cid-3ef6ksr2></circle><line x1="21" y1="21" x2="16.65" y2="16.65" data-astro-cid-3ef6ksr2></line></svg> </button> <button id="theme-toggle" aria-label="Toggle Dark Mode" data-astro-cid-3ef6ksr2> <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-3ef6ksr2><circle cx="12" cy="12" r="5" data-astro-cid-3ef6ksr2></circle><line x1="12" y1="1" x2="12" y2="3" data-astro-cid-3ef6ksr2></line><line x1="12" y1="21" x2="12" y2="23" data-astro-cid-3ef6ksr2></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" data-astro-cid-3ef6ksr2></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" data-astro-cid-3ef6ksr2></line><line x1="1" y1="12" x2="3" y2="12" data-astro-cid-3ef6ksr2></line><line x1="21" y1="12" x2="23" y2="12" data-astro-cid-3ef6ksr2></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" data-astro-cid-3ef6ksr2></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" data-astro-cid-3ef6ksr2></line></svg> <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-3ef6ksr2><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" data-astro-cid-3ef6ksr2></path></svg> </button> <button id="menu-toggle" aria-label="Toggle Menu" data-astro-cid-3ef6ksr2> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-3ef6ksr2><line x1="3" y1="12" x2="21" y2="12" data-astro-cid-3ef6ksr2></line><line x1="3" y1="6" x2="21" y2="6" data-astro-cid-3ef6ksr2></line><line x1="3" y1="18" x2="21" y2="18" data-astro-cid-3ef6ksr2></line></svg> </button> </div> </nav> <div id="mobile-menu" class="mobile-menu hidden" data-astro-cid-3ef6ksr2> <a href="/Academic-Portfolio/" data-astro-cid-3ef6ksr2>Home</a> <a href="/Academic-Portfolio/publications" data-astro-cid-3ef6ksr2>Publications</a> <a href="/Academic-Portfolio/projects" data-astro-cid-3ef6ksr2>Projects</a> <a href="/Academic-Portfolio/team" data-astro-cid-3ef6ksr2>Team</a> <a href="/Academic-Portfolio/blog" data-astro-cid-3ef6ksr2>News</a> <a href="https://shravangoswami.com/resume.pdf" target="_blank" data-astro-cid-3ef6ksr2 rel="noopener noreferrer">CV</a> </div> </header> <script type="module">const c=window,d=n=>{const t=document.documentElement,e=n==="dark"?"dark":"light",o=e==="dark"?"#0f172a":"#ffffff";return t.setAttribute("data-theme",e),t.setAttribute("data-theme-ready","true"),t.style.backgroundColor=o,t.style.colorScheme=e,document.body?.style.setProperty("background-color",o),e},l=()=>{const e=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";typeof c.__setPreferredTheme=="function"?c.__setPreferredTheme(e):d(e),localStorage.setItem("theme",e)},m=()=>{document.getElementById("mobile-menu")?.classList.toggle("hidden")},r=()=>{document.dispatchEvent(new CustomEvent("open-search"))};document.getElementById("theme-toggle")?.addEventListener("click",l);document.getElementById("menu-toggle")?.addEventListener("click",m);document.getElementById("search-toggle")?.addEventListener("click",r);</script>  <main data-astro-cid-bvzihdzo> <article data-astro-cid-bvzihdzo> <div class="hero-image" data-astro-cid-bvzihdzo> <img width="1020" height="510" src="/Academic-Portfolio/blog/nietzsche-perspectivism.png" alt="Perspectivism: The Philosophy of Multiple Truths" data-astro-cid-bvzihdzo> </div> <div class="prose" data-astro-cid-bvzihdzo> <div class="title" data-astro-cid-bvzihdzo> <div class="date" data-astro-cid-bvzihdzo> <time datetime="2024-01-15T00:00:00.000Z"> Jan 15, 2024 </time>  </div> <h1 data-astro-cid-bvzihdzo>Perspectivism: The Philosophy of Multiple Truths</h1>  <hr data-astro-cid-bvzihdzo> </div>  <p>One of my most profound contributions to philosophy is the concept of perspectivism—the recognition that all knowledge is fundamentally perspectival, shaped by the standpoint of the knower. This challenges the very notion that there exists an objective, God’s-eye view of reality independent of our positions and values.</p>
 <h2 id="the-death-of-objectivity">The Death of Objectivity</h2>
 <p>For centuries, Western thought has been enchanted by the dream of objectivity—the fantasy that we might escape our human condition and perceive reality as it “truly is.” But this is precisely the error I have spent my intellectual career correcting. There is no view from nowhere, no absolute standpoint from which truth can be measured.</p>
 <p>Every statement is made from a specific perspective. Every interpretation reflects the values, drives, and constitution of the interpreter. When a scientist observes the world, they do so through the lens of their instruments, their methodology, their prior assumptions. When a moralist proclaims ethical truths, they speak from a particular cultural tradition, a specific historical moment.</p>
