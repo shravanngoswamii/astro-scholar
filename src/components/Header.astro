@@ -45,51 +45,20 @@ const cvHref = CV_URL ? url(CV_URL) : null;
 </header>
 
 <script>
-    type Theme = 'light' | 'dark';
-    type ThemeWindow = Window & typeof globalThis & {
-        __setPreferredTheme?: (theme: Theme) => Theme;
-    };
-
-    const themeWindow = window as ThemeWindow;
-
-    const applyTheme = (theme: Theme): Theme => {
-        const element = document.documentElement;
-        const resolvedTheme = theme === 'dark' ? 'dark' : 'light';
-        const backgroundColor = resolvedTheme === 'dark' ? '#0f172a' : '#ffffff';
-
-        element.setAttribute('data-theme', resolvedTheme);
-        element.setAttribute('data-theme-ready', 'true');
-        element.style.backgroundColor = backgroundColor;
-        element.style.colorScheme = resolvedTheme;
-        document.body?.style.setProperty('background-color', backgroundColor);
-
-        return resolvedTheme;
-    };
-
-    const handleToggleClick = () => {
-        const element = document.documentElement;
-        const isDark = element.getAttribute('data-theme') === 'dark';
-        const newTheme: Theme = isDark ? 'light' : 'dark';
-        if (typeof themeWindow.__setPreferredTheme === 'function') {
-            themeWindow.__setPreferredTheme(newTheme);
-        } else {
-            applyTheme(newTheme);
-        }
+    document.getElementById('theme-toggle')?.addEventListener('click', () => {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        const newTheme = isDark ? 'light' : 'dark';
+        (window as any).__setPreferredTheme?.(newTheme);
         localStorage.setItem('theme', newTheme);
-    };
+    });
 
-    const handleMenuClick = () => {
-        const menu = document.getElementById('mobile-menu');
-        menu?.classList.toggle('hidden');
-    };
+    document.getElementById('menu-toggle')?.addEventListener('click', () => {
+        document.getElementById('mobile-menu')?.classList.toggle('hidden');
+    });
 
-    const handleSearchClick = () => {
+    document.getElementById('search-toggle')?.addEventListener('click', () => {
         document.dispatchEvent(new CustomEvent('open-search'));
-    };
-
-    document.getElementById('theme-toggle')?.addEventListener('click', handleToggleClick);
-    document.getElementById('menu-toggle')?.addEventListener('click', handleMenuClick);
-    document.getElementById('search-toggle')?.addEventListener('click', handleSearchClick);
+    });
 </script>
 
 <style>
@@ -103,7 +72,6 @@ const cvHref = CV_URL ? url(CV_URL) : null;
 		top: 0;
 		z-index: 100;
         transition: background-color 0.3s ease;
-        /* Removed border-bottom */
 	}
     
     header::after {

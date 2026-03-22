@@ -43,91 +43,33 @@ const imageUrl = typeof image === 'string'
 <meta charset="utf-8" />
 <script is:inline>
 	(() => {
-		/** @typedef {'light' | 'dark'} Theme */
-		/** @typedef {Window & typeof globalThis & { __setPreferredTheme?: (theme: Theme) => Theme }} ThemeWindow */
-
 		const root = document.documentElement;
-		const themeWindow = /** @type {ThemeWindow} */ (window);
-		const darkBackground = '#0f172a';
-		const lightBackground = '#ffffff';
-
-		/** @type {(theme: Theme | string | null | undefined) => Theme} */
 		const paintTheme = (theme) => {
-			const resolvedTheme = theme === 'dark' ? 'dark' : 'light';
-			const backgroundColor = resolvedTheme === 'dark' ? darkBackground : lightBackground;
-
-			root.setAttribute('data-theme', resolvedTheme);
-			root.style.backgroundColor = backgroundColor;
-			root.style.colorScheme = resolvedTheme;
-
-			if (document.body) {
-				document.body.style.backgroundColor = backgroundColor;
-			}
-
-			return resolvedTheme;
+			const dark = theme === 'dark';
+			root.setAttribute('data-theme', dark ? 'dark' : 'light');
+			root.style.backgroundColor = dark ? '#0f172a' : '#ffffff';
+			root.style.colorScheme = dark ? 'dark' : 'light';
 		};
-
-		/** @type {Theme} */
 		let theme = 'light';
-
 		try {
-			const storedTheme = localStorage.getItem('theme');
-			if (storedTheme === 'dark' || storedTheme === 'light') {
-				theme = storedTheme;
-			} else if (themeWindow.matchMedia('(prefers-color-scheme: dark)').matches) {
-				theme = 'dark';
-			}
+			const s = localStorage.getItem('theme');
+			if (s === 'dark' || s === 'light') theme = s;
+			else if (matchMedia('(prefers-color-scheme: dark)').matches) theme = 'dark';
 		} catch {
-			if (themeWindow.matchMedia('(prefers-color-scheme: dark)').matches) {
-				theme = 'dark';
-			}
+			if (matchMedia('(prefers-color-scheme: dark)').matches) theme = 'dark';
 		}
-
-		/** @type {(nextTheme: Theme) => Theme} */
-		themeWindow.__setPreferredTheme = (nextTheme) => {
-			const resolvedTheme = paintTheme(nextTheme);
-			root.setAttribute('data-theme-ready', 'true');
-			return resolvedTheme;
-		};
-
 		paintTheme(theme);
-
-		if (!document.body) {
-			document.addEventListener(
-				'DOMContentLoaded',
-				() => {
-					paintTheme(root.getAttribute('data-theme'));
-				},
-				{ once: true }
-			);
-		}
-
-		const markReady = () => root.setAttribute('data-theme-ready', 'true');
-		if (typeof themeWindow.requestAnimationFrame === 'function') {
-			themeWindow.requestAnimationFrame(() => themeWindow.requestAnimationFrame(markReady));
-		} else {
-			setTimeout(markReady, 0);
-		}
+		root.setAttribute('data-theme-ready', 'true');
+		window.__setPreferredTheme = paintTheme;
 	})();
 </script>
 <style is:inline>
-	html,
-	body {
-		min-height: 100%;
-		background-color: #ffffff;
+	html, body { min-height: 100%; background-color: #ffffff; }
+	@media (prefers-color-scheme: dark) {
+		html:not([data-theme='light']), html:not([data-theme='light']) body { background-color: #0f172a; }
 	}
-
-	html[data-theme='light'],
-	html[data-theme='light'] body {
-		background-color: #ffffff;
-		color-scheme: light;
-	}
-
-	html[data-theme='dark'],
-	html[data-theme='dark'] body {
-		background-color: #0f172a;
-		color-scheme: dark;
-	}
+	html[data-theme='dark'], html[data-theme='dark'] body { background-color: #0f172a; color-scheme: dark; }
+	html[data-theme='light'], html[data-theme='light'] body { background-color: #ffffff; color-scheme: light; }
 </style>
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <link rel="icon" type="image/svg+xml" href={url('/favicon.svg')} />
