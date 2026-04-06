@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://shravangoswami.com/Academic-Portfoliositemap-index.xml
+Sitemap: https://shravangoswami.com/astro-scholarsitemap-index.xml
