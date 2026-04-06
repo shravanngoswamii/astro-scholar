@@ -6,15 +6,11 @@ import AuthorLink from '../components/AuthorLink.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
-import TableOfContents from '../components/TableOfContents.astro';
 import { url } from '../utils/paths';
 
-type Props = CollectionEntry<'blog'>['data'] & {
-	id?: string;
-	headings?: { depth: number; slug: string; text: string }[];
-};
+type Props = CollectionEntry<'blog'>['data'] & { id?: string };
 
-const { title, description, pubDate, updatedDate, heroImage, authors, id, headings } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, authors, id } = Astro.props;
 const fallbackHero = id ? url(`/blog/${id}.png`) : url('/og.png');
 ---
 
@@ -39,44 +35,69 @@ const fallbackHero = id ? url(`/blog/${id}.png`) : url('/og.png');
 				max-width: 100%;
 				height: auto;
 			}
+
 			.blog-container {
-				display: flex;
-				flex-direction: column;
+				position: relative;
 				max-width: 1200px;
 				margin: 0 auto;
-				padding: 1rem;
+				display: flex;
+				justify-content: center;
 			}
+
 			.prose {
 				width: 760px;
 				max-width: 100%;
+				padding: 1rem;
 				color: rgb(var(--gray-dark));
 			}
 			.prose :global(p) {
 				text-align: justify;
 				hyphens: auto;
 			}
-			.toc-sidebar {
+
+			/* Style the remark-toc output */
+			.prose :global(h2#table-of-contents) {
 				display: none;
 			}
+			.prose > :global(ul:first-of-type) {
+				margin-bottom: 2rem;
+				padding: 1rem;
+				background: var(--color-bg-offset);
+				border: 1px solid var(--color-border);
+				border-radius: var(--radius);
+				list-style: none;
+			}
+			.prose > :global(ul:first-of-type) :global(li) {
+				margin-bottom: 0.5rem;
+			}
+			.prose > :global(ul:first-of-type) :global(a) {
+				text-decoration: none;
+				color: var(--color-text-muted);
+			}
+			.prose > :global(ul:first-of-type) :global(a:hover) {
+				color: var(--color-accent);
+			}
 
-			@media (min-width: 1024px) {
-				.blog-container {
-					flex-direction: row-reverse;
-					justify-content: center;
-					align-items: flex-start;
-					gap: 2rem;
-				}
-				.toc-sidebar {
-					display: block;
-					position: sticky;
-					top: 2rem;
+			@media (min-width: 1200px) {
+				.prose > :global(ul:first-of-type) {
+					position: absolute;
+					top: 1rem;
+					left: calc(50% + 400px); /* Position it to the right of the 760px centered prose */
 					width: 250px;
-					flex-shrink: 0;
+					margin-bottom: 0;
 				}
-				.prose {
-					margin: 0;
+				.prose > :global(ul:first-of-type)::before {
+					content: "Table of Contents";
+					display: block;
+					font-weight: 700;
+					margin-bottom: 0.5rem;
+					color: var(--color-text-main);
+					text-transform: uppercase;
+					font-size: 0.8rem;
+					letter-spacing: 0.05em;
 				}
 			}
+
 			.title {
 				margin-bottom: 1em;
 				padding: 1em 0;
@@ -106,17 +127,6 @@ const fallbackHero = id ? url(`/blog/${id}.png`) : url('/og.png');
 			.blog-authors span {
 				font-size: 0.9rem;
 			}
-			.mobile-toc {
-				display: block;
-				margin-bottom: 2rem;
-			}
-
-			@media (min-width: 1024px) {
-				.mobile-toc {
-					display: none;
-				}
-			}
-
 			@media (max-width: 768px) {
 				.title h1 {
 					font-size: 1.6rem;
@@ -140,14 +150,9 @@ const fallbackHero = id ? url(`/blog/${id}.png`) : url('/og.png');
 					)}
 				</div>
 				<div class="blog-container">
-					{headings && headings.length > 0 && (
-						<aside class="toc-sidebar">
-							<TableOfContents headings={headings} />
-						</aside>
-					)}
 					<div class="prose">
 						<div class="title">
-						<div class="date">
+							<div class="date">
 							<FormattedDate date={pubDate} />
 							{
 								updatedDate && (
@@ -170,14 +175,6 @@ const fallbackHero = id ? url(`/blog/${id}.png`) : url('/og.png');
 						)}
 						<hr />
 					</div>
-
-					{/* Mobile TOC */}
-					{headings && headings.length > 0 && (
-						<div class="mobile-toc">
-							<TableOfContents headings={headings} />
-						</div>
-					)}
-
 					<slot />
 					</div>
 				</div>
