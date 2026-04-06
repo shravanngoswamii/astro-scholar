@@ -1,0 +1,31 @@
+
+> academic-portfolio@0.0.1 dev
+> astro dev
+
+[vite] connected.
+13:42:11 [types] Generated 1ms
+[vite] connected.
+
+ update  ▶ New version of Astro available: 6.1.4
+  Run npx @astrojs/upgrade to update
+
+13:42:12 [content] Syncing content
+13:42:12 [content] Synced content
+13:42:12 [vite] Re-optimizing dependencies because vite config has changed
+ astro  v6.0.8 ready in 2543 ms
+┃ Local    http://localhost:4321/Academic-Portfolio
+┃ Network  use --host to expose
+13:42:12 watching for file changes...
+13:42:36 [200] / 244ms
+13:42:36 [vite] ✨ new dependencies optimized: astro/runtime/client/dev-toolbar/entrypoint.js, @pagefind/default-ui
+13:42:36 [vite] ✨ optimized dependencies changed. reloading
+13:42:36 [ERROR] [router] Request URLs for public/ assets must also include your base. "/Academic-Portfolio/fonts/atkinson-regular.woff" expected, but received "/fonts/atkinson-regular.woff".
+13:42:36 [ERROR] [router] Request URLs for public/ assets must also include your base. "/Academic-Portfolio/fonts/atkinson-bold.woff" expected, but received "/fonts/atkinson-bold.woff".
+13:54:59 [watch] src/components/Header.astro
+13:55:12 [watch] src/components/Header.astro
+13:55:33 [watch] /src/styles/global.css
+13:55:33 [watch] src/styles/global.css
+[vite] program reload
+13:58:27 [200] / 147ms
+13:58:28 [ERROR] [router] Request URLs for public/ assets must also include your base. "/Academic-Portfolio/fonts/atkinson-bold.woff" expected, but received "/fonts/atkinson-bold.woff".
+13:58:28 [ERROR] [router] Request URLs for public/ assets must also include your base. "/Academic-Portfolio/fonts/atkinson-regular.woff" expected, but received "/fonts/atkinson-regular.woff".

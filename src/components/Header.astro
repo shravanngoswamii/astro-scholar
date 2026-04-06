@@ -20,7 +20,7 @@ const cvHref = CV_URL ? url(CV_URL) : null;
 		</div>
 
         <div class="header-actions">
-            <button id="search-toggle" aria-label="Search site">
+            <button id="search-toggle-desktop" class="search-toggle" aria-label="Search site">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
             </button>
             <button id="theme-toggle" aria-label="Toggle Dark Mode">
@@ -35,6 +35,12 @@ const cvHref = CV_URL ? url(CV_URL) : null;
 	</nav>
 
     <div id="mobile-menu" class="mobile-menu hidden">
+        <div class="mobile-menu-header">
+            <span class="mobile-menu-title">Menu</span>
+            <button id="search-toggle-mobile" class="search-toggle" aria-label="Search site">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            </button>
+        </div>
         <a href={url('/')}>Home</a>
         <a href={url('/publications')}>Publications</a>
         <a href={url('/projects')}>Projects</a>
@@ -56,8 +62,10 @@ const cvHref = CV_URL ? url(CV_URL) : null;
         document.getElementById('mobile-menu')?.classList.toggle('hidden');
     });
 
-    document.getElementById('search-toggle')?.addEventListener('click', () => {
-        document.dispatchEvent(new CustomEvent('open-search'));
+    document.querySelectorAll('.search-toggle').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            document.dispatchEvent(new CustomEvent('open-search'));
+        });
     });
 </script>
 
@@ -134,7 +142,7 @@ const cvHref = CV_URL ? url(CV_URL) : null;
         gap: 0.5rem;
     }
     
-    #search-toggle,
+    .search-toggle,
     #theme-toggle {
         background: transparent;
         border: none;
@@ -148,10 +156,27 @@ const cvHref = CV_URL ? url(CV_URL) : null;
         color: var(--color-text-main);
         transition: background-color 0.2s ease;
     }
-    #search-toggle:hover,
+    .search-toggle:hover,
     #theme-toggle:hover {
         background-color: var(--color-bg-offset);
         color: var(--color-accent);
+    }
+
+    .mobile-menu-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 0.25rem;
+        border-bottom: 1px solid var(--color-border);
+        margin-bottom: 0.25rem;
+    }
+    .mobile-menu-title {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--color-text-muted);
+        padding-left: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
     }
 
     #menu-toggle {
@@ -218,5 +243,6 @@ const cvHref = CV_URL ? url(CV_URL) : null;
 	@media (max-width: 720px) {
 		.internal-links { display: none; }
         #menu-toggle { display: flex; }
+        #search-toggle-desktop { display: none !important; }
 	}
 </style>
