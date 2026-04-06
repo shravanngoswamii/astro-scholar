@@ -12,7 +12,4 @@ export default defineConfig({
 	build: {
 		inlineStylesheets: 'always',
 	},
-	image: {
-		domains: ['upload.wikimedia.org'],
-	},
 });
