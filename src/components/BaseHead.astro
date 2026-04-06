@@ -106,11 +106,11 @@ const imageUrl = typeof image === 'string'
 		margin: 0 auto;
 		height: 4.5rem;
 	}
-	html[data-theme='dark'] header { background: rgba(15, 23, 42, 0.8); }
-	html:not([data-theme='dark']) header { background: rgba(255, 255, 255, 0.85); }
+	html[data-theme='dark'] header { background-color: rgba(15, 23, 42, 0.8); }
+	html:not([data-theme='dark']) header { background-color: rgba(255, 255, 255, 0.85); }
 	/* Critical card backgrounds — prevents white flash in dark mode */
 	.project-card, .interactive-card {
-		background: var(--color-bg-offset);
+		background-color: var(--color-bg-offset);
 		border-color: var(--color-border);
 	}
 	body {
