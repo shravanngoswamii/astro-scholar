@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "@pagefind/default-ui": "^1.5.0",
+    "@playwright/test": "^1.59.1",
     "pagefind": "^1.4.0"
   }
 }
