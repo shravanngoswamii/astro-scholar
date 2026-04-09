@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://shravangoswami.com/astro-scholar/pr-previews/12sitemap-index.xml
