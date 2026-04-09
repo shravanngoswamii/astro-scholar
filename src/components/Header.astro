@@ -16,6 +16,8 @@ const cvHref = CV_URL ? url(CV_URL) : null;
 			<HeaderLink href={url('/projects')}>Projects</HeaderLink>
 			<HeaderLink href={url('/team')}>Team</HeaderLink>
 			<HeaderLink href={url('/blog')}>News</HeaderLink>
+			<HeaderLink href={url('/tags')}>Tags</HeaderLink>
+			<HeaderLink href={url('/archive')}>Archive</HeaderLink>
 			{cvHref && <HeaderLink href={cvHref} target="_blank">CV</HeaderLink>}
 		</div>
 
@@ -49,6 +51,8 @@ const cvHref = CV_URL ? url(CV_URL) : null;
         <a href={url('/projects')}>Projects</a>
         <a href={url('/team')}>Team</a>
         <a href={url('/blog')}>News</a>
+        <a href={url('/tags')}>Tags</a>
+        <a href={url('/archive')}>Archive</a>
         {cvHref && <a href={cvHref} target="_blank">CV</a>}
     </div>
 </header>

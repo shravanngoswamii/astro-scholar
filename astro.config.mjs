@@ -8,7 +8,10 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
 	site: 'https://shravangoswami.com',
 	base: process.env.BASE_PATH || '/astro-scholar',
-	integrations: [mdx(), sitemap()],
+	integrations: [
+		mdx(),
+		sitemap()
+	],
 	build: {
 		inlineStylesheets: 'always',
 	},

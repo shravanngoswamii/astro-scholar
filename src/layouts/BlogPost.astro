@@ -11,7 +11,7 @@ import { url } from '../utils/paths';
 
 type Props = CollectionEntry<'blog'>['data'] & { id?: string, headings?: { depth: number; slug: string; text: string }[], toc?: boolean };
 
-const { title, description, pubDate, updatedDate, heroImage, authors, id, headings = [], toc } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, authors, tags, id, headings = [], toc } = Astro.props;
 const fallbackHero = id ? url(`/blog/${id}.png`) : url('/og.png');
 ---
 
@@ -484,7 +484,7 @@ const fallbackHero = id ? url(`/blog/${id}.png`) : url('/og.png');
 						<img width={1020} height={510} src={fallbackHero} alt={title} />
 					)}
 				</div>
-				<div class="blog-container">
+				<div class="blog-container" style="position: relative;">
 					<div class="prose-wrapper">
 						<div class="prose">
 							<div class="title">
@@ -506,6 +506,15 @@ const fallbackHero = id ? url(`/blog/${id}.png`) : url('/og.png');
 												<AuthorLink nameOrSlug={authorId} />
 												{i < authors.length - 1 ? ', ' : ''}
 											</span>
+										))}
+									</div>
+								)}
+								{tags && tags.length > 0 && (
+									<div class="blog-tags" style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-top: 0.75rem;">
+										{tags.map((tag) => (
+											<a href={url(`/tags/${tag}`)} style="text-decoration: none; font-size: 0.85rem; font-weight: 600; color: var(--color-accent); background: var(--color-bg-offset); padding: 0.2rem 0.6rem; border-radius: 999px; border: 1px solid var(--color-border);">
+												#{tag}
+											</a>
 										))}
 									</div>
 								)}
