@@ -16,8 +16,8 @@ export default defineConfig({
 			ja: "en"
 		},
 		routing: {
-			prefixDefaultLocale: true,
-			fallbackType: "redirect"
+			prefixDefaultLocale: false,
+			fallbackType: "rewrite"
 		}
 	},
 	site: 'https://shravangoswami.com',
