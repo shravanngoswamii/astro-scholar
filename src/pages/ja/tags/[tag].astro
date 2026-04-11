@@ -8,7 +8,7 @@ import FormattedDate from '../../../components/FormattedDate.astro';
 import AuthorLink from '../../../components/AuthorLink.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../../../consts';
 import { url } from '../../../utils/paths';
-import { getLangFromUrl } from '../../../i18n/utils';
+import { getLangFromUrl, useTranslations } from '../../../i18n/utils';
 
 export async function getStaticPaths() {
 	const posts = await getCollection('blog');
@@ -27,6 +27,7 @@ export async function getStaticPaths() {
 const { tag } = Astro.params;
 const { posts } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <!doctype html>
@@ -152,7 +153,7 @@ const lang = getLangFromUrl(Astro.url);
 	<body>
 		<Header />
 		<main>
-			<h1>Posts tagged "{tag}"</h1>
+			<h1>{t('Posts tagged')} "{tag}"</h1>
             <p style="margin-bottom: 2rem; max-width: 700px; color: var(--color-text-muted);">
                 <a href={url('/tags')} style="color: var(--color-accent); text-decoration: none;">&larr; Back to all tags</a>
             </p>

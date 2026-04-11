@@ -5,9 +5,10 @@ import Footer from '../components/Footer.astro';
 import { SITE_TITLE } from '../consts';
 import AuthorLink from '../components/AuthorLink.astro';
 import bibFileRaw from '../data/publications.bib?raw';
-import { getLangFromUrl } from '../i18n/utils';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 
 interface Author {
     first: string;
@@ -141,7 +142,7 @@ const formatAuthor = (auth: Author) => {
 				))}
 
                 {publications.length === 0 && (
-                    <p>No publications found.</p>
+                    <p>{t('No publications found.')}</p>
                 )}
 			</div>
 		</main>

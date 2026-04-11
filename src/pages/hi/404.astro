@@ -4,15 +4,16 @@ import Footer from '../../components/Footer.astro';
 import Header from '../../components/Header.astro';
 import { SITE_TITLE } from '../../consts';
 import { url } from '../../utils/paths';
-import { getLangFromUrl } from '../../i18n/utils';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <!doctype html>
 <html lang={lang}>
   <head>
-    <BaseHead title={`404 | ${SITE_TITLE}`} description="The page you requested could not be found." />
+    <BaseHead title={`404 | ${SITE_TITLE}`} description="{t('The page you requested could not be found.')}" />
     <style>
       .not-found-wrap {
         position: relative;

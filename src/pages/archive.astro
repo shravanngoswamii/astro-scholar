@@ -6,9 +6,10 @@ import Header from '../components/Header.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import { url } from '../utils/paths';
-import { getLangFromUrl } from '../i18n/utils';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 
 const posts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
@@ -91,7 +92,7 @@ const years = Object.keys(groupedPosts).map(Number).sort((a, b) => b - a);
 	<body>
 		<Header />
 		<main>
-			<h1>Archive</h1>
+			<h1>{t('Archive')}</h1>
             <p style="margin-bottom: 2rem; color: var(--color-text-muted);">
                 A chronological list of all published blog posts.
             </p>

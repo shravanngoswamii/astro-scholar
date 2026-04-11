@@ -5,9 +5,10 @@ import Footer from '../components/Footer.astro';
 import { SITE_TITLE } from '../consts';
 import authorsData from '../data/authors.json';
 import { generateFallbackAvatar } from '../utils/avatar';
-import { getLangFromUrl } from '../i18n/utils';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 
 type AuthorRecord = (typeof authorsData)[number] & {
 	isTeam?: boolean;
@@ -181,7 +182,7 @@ const withFallback = (member: AuthorRecord) => ({
 				);
 			})}
 			
-			<h2>Current Members</h2>
+			<h2>{t('Current Members')}</h2>
 			<div class="grid-3">
 				{currentMembers.length > 0 ? currentMembers.map((member) => {
 					const profile = withFallback(member);
@@ -205,7 +206,7 @@ const withFallback = (member: AuthorRecord) => ({
 
 			{dissertationStudents.length > 0 && (
 				<>
-					<h2>Dissertation Students</h2>
+					<h2>{t('Dissertation Students')}</h2>
 					<div class="grid-3">
 						{dissertationStudents.map((member) => {
 							const profile = withFallback(member);
@@ -231,7 +232,7 @@ const withFallback = (member: AuthorRecord) => ({
 
 			{alumni.length > 0 && (
 				<>
-					<h2>Alumni</h2>
+					<h2>{t('Alumni')}</h2>
 					<div class="grid-3">
 						{alumni.map((member) => {
 							const profile = withFallback(member);

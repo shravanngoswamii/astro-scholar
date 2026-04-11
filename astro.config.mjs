@@ -8,18 +8,6 @@ import rehypeKatex from 'rehype-katex';
 
 // https://astro.build/config
 export default defineConfig({
-	i18n: {
-		locales: ["en", "hi", "ja"],
-		defaultLocale: "en",
-		fallback: {
-			hi: "en",
-			ja: "en"
-		},
-		routing: {
-			prefixDefaultLocale: false,
-			fallbackType: "rewrite"
-		}
-	},
 	site: 'https://shravangoswami.com',
 	base: process.env.BASE_PATH || '/astro-scholar',
 	integrations: [
@@ -39,4 +27,16 @@ export default defineConfig({
 	build: {
 		inlineStylesheets: 'always',
 	},
+	i18n: {
+		locales: ["en", "hi", "ja"],
+		defaultLocale: "en",
+		fallback: {
+			hi: "en",
+			ja: "en",
+		},
+		routing: {
+			prefixDefaultLocale: false,
+			fallbackType: "rewrite"
+		}
+	}
 });

@@ -1,4 +1,9 @@
 ---
+
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
 const today = new Date();
 import {
   CONTACT,
@@ -39,7 +44,7 @@ const cvHref = CV_URL ? url(CV_URL) : null;
         </div>
 
         <div class="footer-col">
-            <h4>Contact</h4>
+            <h4>{t('Contact')}</h4>
             <address>
                 {CONTACT.organization}<br/>
                 {CONTACT.addressLines.map((line) => (
@@ -58,7 +63,7 @@ const cvHref = CV_URL ? url(CV_URL) : null;
         </div>
 
         <div class="footer-col">
-            <h4>Connect</h4>
+            <h4>{t('Connect')}</h4>
             <div class="social-links">
                 {SOCIAL_LINKS.map((link) => (
                     <a

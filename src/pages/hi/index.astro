@@ -7,9 +7,10 @@ import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import bibFileRaw from '../../data/publications.bib?raw';
 import { url } from '../../utils/paths';
-import { getLangFromUrl } from '../../i18n/utils';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 
 const posts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
@@ -78,7 +79,7 @@ const formatAuthor = (auth: Author) => {
 ---
 
 <!doctype html>
-<html lang={lang}>
+<html lang="en">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 		<style>
@@ -136,11 +137,11 @@ const formatAuthor = (auth: Author) => {
 						Institute for Advanced Study
 					</h2>
 					<p style="font-size: 1.1rem; line-height: 1.7; margin-bottom: 2rem;">
-						Welcome to my academic portfolio. My research focuses on <strong>Philosophy of Culture, Morality, and the Will to Power</strong>. I lead the Philosophy Group where we challenge conventional thinking and explore the transformation of human values and civilization.
+						{t('Welcome to my academic portfolio. My research focuses on')} <strong>{t('Philosophy of Culture, Morality, and the Will to Power')}</strong>. {t('I lead the Philosophy Group where we challenge conventional thinking and explore the transformation of human values and civilization.')}
 					</p>
 					<div class="hero-buttons">
-						<a href={url('/publications')} class="btn">View Publications</a>
-						<a href={url('/projects')} class="btn btn-outline">Current Projects</a>
+						<a href={url('/publications')} class="btn">{t('View Publications')}</a>
+						<a href={url('/projects')} class="btn btn-outline">{t('Current Projects')}</a>
 					</div>
 				</div>
 				<div class="hero-image">
@@ -152,7 +153,7 @@ const formatAuthor = (auth: Author) => {
 
 			<div class="grid-2" style="gap: 4rem; margin-top: 0;">
                 <section>
-                    <h2 style="margin-top: 0;">Selected Publications</h2>
+                    <h2 style="margin-top: 0;">{t('Selected Publications')}</h2>
                     <div class="publication-list">
                         {publications.length > 0 ? publications.map((pub) => (
                             <div class="pub-mini-item">
@@ -166,7 +167,7 @@ const formatAuthor = (auth: Author) => {
                                     {pub.fields.year && <span>, {pub.fields.year}</span>}
                                 </div>
                             </div>
-                        )) : <p>No publications found.</p>}
+                        )) : <p>{t('No publications found.')}</p>}
                     </div>
                     <div style="margin-top: 1.5rem;">
                         <a href={url('/publications')} style="font-weight: 600;">View Full List &rarr;</a>
@@ -174,7 +175,7 @@ const formatAuthor = (auth: Author) => {
                 </section>
 
                 <section>
-                    <h2 style="margin-top: 0;">Lab News</h2>
+                    <h2 style="margin-top: 0;">{t('Lab News')}</h2>
                     <ul style="list-style: none; padding: 0;">
                         {posts.map((post) => (
                             <li style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px dashed var(--color-border);">

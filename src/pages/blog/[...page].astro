@@ -8,7 +8,7 @@ import Header from '../../components/Header.astro';
 import AuthorLink from '../../components/AuthorLink.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
 import { url } from '../../utils/paths';
-import { getLangFromUrl } from '../../i18n/utils';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
 
 export async function getStaticPaths() {
     const posts = (await getCollection('blog')).sort(
@@ -37,6 +37,7 @@ export async function getStaticPaths() {
 
 const { posts, currentPage, totalPages, nextPage, prevPage } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <!doctype html>
@@ -162,9 +163,9 @@ const lang = getLangFromUrl(Astro.url);
 	<body>
 		<Header />
 		<main>
-			<h1>Lab News & Updates</h1>
+			<h1><span set:html={t('Lab News')} /></h1>
             <p style="margin-bottom: 2rem; max-width: 700px; color: var(--color-text-muted);">
-                Explore our latest research highlights, tutorials, and announcements.
+                {t('Explore our latest research highlights, tutorials, and announcements.')}
             </p>
 
             <div class="blog-list">
@@ -206,7 +207,7 @@ const lang = getLangFromUrl(Astro.url);
                                     {post.data.description}
                                 </p>
 
-                                <a href={url(`/blog/${post.id}/`)} class="read-more">Read Article &rarr;</a>
+                                <a href={url(`/blog/${post.id}/`)} class="read-more"><span set:html={t('Read Article &rarr;')} /></a>
                             </div>
 
                             <a href={url(`/blog/${post.id}/`)} class="blog-thumb">
@@ -230,19 +231,19 @@ const lang = getLangFromUrl(Astro.url);
             {totalPages > 1 && (
                 <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 3rem;">
                     {prevPage ? (
-                        <a href={url(prevPage === 1 ? '/blog' : `/blog/${prevPage}`)} style="padding: 0.5rem 1rem; border: 1px solid var(--color-border); border-radius: 8px; text-decoration: none; color: var(--color-text-main); font-weight: 500;">&larr; Previous</a>
+                        <a href={url(prevPage === 1 ? '/blog' : `/blog/${prevPage}`)} style="padding: 0.5rem 1rem; border: 1px solid var(--color-border); border-radius: 8px; text-decoration: none; color: var(--color-text-main); font-weight: 500;"><span set:html={'&larr; ' + t('Previous')} /></a>
                     ) : (
-                        <span style="padding: 0.5rem 1rem; border: 1px solid var(--color-border); border-radius: 8px; color: var(--color-text-muted); opacity: 0.5; cursor: not-allowed; font-weight: 500;">&larr; Previous</span>
+                        <span style="padding: 0.5rem 1rem; border: 1px solid var(--color-border); border-radius: 8px; color: var(--color-text-muted); opacity: 0.5; cursor: not-allowed; font-weight: 500;"><span set:html={'&larr; ' + t('Previous')} /></span>
                     )}
 
                     <span style="display: flex; align-items: center; font-weight: 600; color: var(--color-text-muted);">
-                        Page {currentPage} of {totalPages}
+                        {t('Page')} {currentPage} {t('of')} {totalPages}
                     </span>
 
                     {nextPage ? (
-                        <a href={url(`/blog/${nextPage}`)} style="padding: 0.5rem 1rem; border: 1px solid var(--color-border); border-radius: 8px; text-decoration: none; color: var(--color-text-main); font-weight: 500;">Next &rarr;</a>
+                        <a href={url(`/blog/${nextPage}`)} style="padding: 0.5rem 1rem; border: 1px solid var(--color-border); border-radius: 8px; text-decoration: none; color: var(--color-text-main); font-weight: 500;"><span set:html={t('Next') + ' &rarr;'} /></a>
                     ) : (
-                        <span style="padding: 0.5rem 1rem; border: 1px solid var(--color-border); border-radius: 8px; color: var(--color-text-muted); opacity: 0.5; cursor: not-allowed; font-weight: 500;">Next &rarr;</span>
+                        <span style="padding: 0.5rem 1rem; border: 1px solid var(--color-border); border-radius: 8px; color: var(--color-text-muted); opacity: 0.5; cursor: not-allowed; font-weight: 500;"><span set:html={t('Next') + ' &rarr;'} /></span>
                     )}
                 </div>
             )}

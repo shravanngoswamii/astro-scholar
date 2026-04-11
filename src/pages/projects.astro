@@ -6,9 +6,10 @@ import { SITE_TITLE } from '../consts';
 import AuthorLink from '../components/AuthorLink.astro';
 import projectsData from '../data/projects.json';
 import { url } from '../utils/paths';
-import { getLangFromUrl } from '../i18n/utils';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 const projects = projectsData.sort((a, b) => b.year - a.year);
 ---
 
@@ -167,7 +168,7 @@ const projects = projectsData.sort((a, b) => b.year - a.year);
 		<Header />
 		<main class="projects-section">
 			<div class="projects-hero">
-				<h1>Research Projects</h1>
+				<h1>{t('Research Projects')}</h1>
 				<p>Landmark philosophical investigations that have fundamentally shaped the course of Western intellectual history.</p>
 			</div>
 			
