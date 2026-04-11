@@ -1,12 +1,12 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import { SITE_TITLE } from '../consts';
-import AuthorLink from '../components/AuthorLink.astro';
-import projectsData from '../data/projects.json';
-import { url } from '../utils/paths';
-import { getLangFromUrl, useTranslations } from '../i18n/utils';
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { SITE_TITLE } from '../../consts';
+import AuthorLink from '../../components/AuthorLink.astro';
+import projectsData from '../../data/projects.json';
+import { url } from '../../utils/paths';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -171,7 +171,7 @@ const projects = projectsData.sort((a, b) => b.year - a.year);
 				<h1>{t('Research Projects')}</h1>
 				<p>Landmark philosophical investigations that have fundamentally shaped the course of Western intellectual history.</p>
 			</div>
-			
+
 			<div class="projects-grid">
 				{projects.length > 0 ? projects.map((project) => (
 					<article class="project-card">
@@ -194,9 +194,9 @@ const projects = projectsData.sort((a, b) => b.year - a.year);
 									)}
 								</h3>
 							</div>
-							
+
 							<p class="project-description">{project.description}</p>
-							
+
 							{project.authors && project.authors.length > 0 && (
 								<div class="project-meta">
 									<span class="meta-label">By:</span>

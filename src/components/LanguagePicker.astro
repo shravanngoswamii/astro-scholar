@@ -1,0 +1,97 @@
+---
+import { languages } from '../i18n/ui';
+import { getLangFromUrl, useTranslatedPath } from '../i18n/utils';
+import { url } from '../utils/paths';
+
+const lang = getLangFromUrl(Astro.url);
+const translatePath = useTranslatedPath(lang);
+
+// Get current path relative to base and language
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
+let currentPath = Astro.url.pathname;
+if (currentPath.startsWith(basePath)) {
+    currentPath = currentPath.substring(basePath.length);
+}
+if (currentPath.startsWith(`/${lang}/`)) {
+    currentPath = currentPath.substring(lang.length + 1);
+} else if (currentPath === `/${lang}`) {
+    currentPath = '/';
+}
+
+---
+<div class="language-picker dropdown">
+    <button class="dropbtn" aria-label="Select Language">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-globe">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+        </svg>
+    </button>
+    <div class="dropdown-content">
+        {Object.entries(languages).map(([l, label]) => (
+            <a href={url(translatePath(currentPath, l))} class={l === lang ? 'active' : ''}>{label}</a>
+        ))}
+    </div>
+</div>
+
+<style>
+    .language-picker {
+        position: relative;
+        display: inline-block;
+    }
+    .language-picker .dropbtn {
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--color-text-main);
+        transition: background-color 0.2s ease;
+        padding: 0;
+    }
+    .language-picker .dropbtn:hover {
+        background-color: var(--color-bg-offset);
+        color: var(--color-accent);
+    }
+    .language-picker .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: var(--color-bg-mobile-menu);
+        backdrop-filter: blur(40px) saturate(150%);
+        -webkit-backdrop-filter: blur(40px) saturate(150%);
+        min-width: 120px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 200;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid var(--color-header-border);
+        top: 100%;
+        right: 0;
+        left: auto;
+        transform: none;
+    }
+    .language-picker:hover .dropdown-content,
+    .language-picker:focus-within .dropdown-content {
+        display: block;
+    }
+    .language-picker .dropdown-content a {
+        color: var(--color-text-main);
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        border-bottom: none;
+        font-size: 0.95rem;
+    }
+    .language-picker .dropdown-content a:hover {
+        background-color: var(--color-bg-offset);
+        color: var(--color-accent);
+    }
+    .language-picker .dropdown-content a.active {
+        font-weight: bold;
+        color: var(--color-accent);
+    }
+</style>

@@ -2,31 +2,38 @@
 import HeaderLink from './HeaderLink.astro';
 import { CV_URL, SITE_TITLE } from '../consts';
 import { url } from '../utils/paths';
+import LanguagePicker from './LanguagePicker.astro';
+import { getLangFromUrl, useTranslations, useTranslatedPath } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
 
 const cvHref = CV_URL ? url(CV_URL) : null;
 ---
 
 <header>
 	<nav>
-		<h2><a href={url('/')}>{SITE_TITLE}</a></h2>
+		<h2><a href={url(translatePath('/'))}>{SITE_TITLE}</a></h2>
         
 		<div class="internal-links">
-			<HeaderLink href={url('/')}>Home</HeaderLink>
-			<HeaderLink href={url('/publications')}>Publications</HeaderLink>
-			<HeaderLink href={url('/projects')}>Projects</HeaderLink>
-			<HeaderLink href={url('/team')}>Team</HeaderLink>
+			<HeaderLink href={url(translatePath('/'))}>{t('nav.home')}</HeaderLink>
+			<HeaderLink href={url(translatePath('/publications'))}>{t('nav.publications')}</HeaderLink>
+			<HeaderLink href={url(translatePath('/projects'))}>{t('nav.projects')}</HeaderLink>
+			<HeaderLink href={url(translatePath('/team'))}>{t('nav.team')}</HeaderLink>
 			<div class="dropdown">
-				<button class="dropbtn">Blog</button>
+				<button class="dropbtn">{t('nav.blog')}</button>
 				<div class="dropdown-content">
-					<HeaderLink href={url('/blog')}>News</HeaderLink>
-					<HeaderLink href={url('/tags')}>Tags</HeaderLink>
-					<HeaderLink href={url('/archive')}>Archive</HeaderLink>
+					<HeaderLink href={url(translatePath('/blog'))}>{t('nav.blog')}</HeaderLink>
+					<HeaderLink href={url(translatePath('/tags'))}>{t('nav.tags')}</HeaderLink>
+					<HeaderLink href={url(translatePath('/archive'))}>{t('nav.archive')}</HeaderLink>
 				</div>
 			</div>
 			{cvHref && <HeaderLink href={cvHref} target="_blank">CV</HeaderLink>}
 		</div>
 
         <div class="header-actions">
+            <LanguagePicker />
             <a href="https://github.com/shravanngoswamii/astro-scholar" target="_blank" rel="noopener noreferrer" class="github-link" aria-label="GitHub Repository" title="GitHub Repository">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
             </a>
@@ -51,15 +58,15 @@ const cvHref = CV_URL ? url(CV_URL) : null;
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
             </button>
         </div>
-        <a href={url('/')}>Home</a>
-        <a href={url('/publications')}>Publications</a>
-        <a href={url('/projects')}>Projects</a>
-        <a href={url('/team')}>Team</a>
-        <span class="mobile-menu-section">Blog</span>
+        <a href={url(translatePath('/'))}>{t('nav.home')}</a>
+        <a href={url(translatePath('/publications'))}>{t('nav.publications')}</a>
+        <a href={url(translatePath('/projects'))}>{t('nav.projects')}</a>
+        <a href={url(translatePath('/team'))}>{t('nav.team')}</a>
+        <span class="mobile-menu-section">{t('nav.blog')}</span>
         <div class="mobile-submenu">
-            <a href={url('/blog')}>News</a>
-            <a href={url('/tags')}>Tags</a>
-            <a href={url('/archive')}>Archive</a>
+            <a href={url(translatePath('/blog'))}>{t('nav.blog')}</a>
+            <a href={url(translatePath('/tags'))}>{t('nav.tags')}</a>
+            <a href={url(translatePath('/archive'))}>{t('nav.archive')}</a>
         </div>
         {cvHref && <a href={cvHref} target="_blank">CV</a>}
     </div>

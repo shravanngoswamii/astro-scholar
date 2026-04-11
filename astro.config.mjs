@@ -27,4 +27,16 @@ export default defineConfig({
 	build: {
 		inlineStylesheets: 'always',
 	},
+	i18n: {
+		locales: ["en", "hi", "ja"],
+		defaultLocale: "en",
+		fallback: {
+			hi: "en",
+			ja: "en",
+		},
+		routing: {
+			prefixDefaultLocale: false,
+			fallbackType: "rewrite"
+		}
+	}
 });

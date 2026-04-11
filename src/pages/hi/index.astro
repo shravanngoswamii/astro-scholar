@@ -1,13 +1,13 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
-import bibFileRaw from '../data/publications.bib?raw';
-import { url } from '../utils/paths';
-import { getLangFromUrl, useTranslations } from '../i18n/utils';
+import bibFileRaw from '../../data/publications.bib?raw';
+import { url } from '../../utils/paths';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -39,10 +39,10 @@ function parseBibTeX(input: string): BibEntry[] {
 
         const keyMatch = body.match(/^\s*([^,]+),/);
         const key = keyMatch ? keyMatch[1].trim() : 'unknown';
-        
+
         const fields: Record<string, string> = { title: "Untitled", year: "0000" };
         const fieldRegex = /(\w+)\s*=\s*(?:\{((?:[^{}]|{[^{}]*})*)\}|"((?:[^"]|\\")*)"|(\d+))/g;
-        
+
         let match;
         while ((match = fieldRegex.exec(body)) !== null) {
             const fieldKey = match[1].toLowerCase();
@@ -91,8 +91,8 @@ const formatAuthor = (auth: Author) => {
 				margin-bottom: 2rem;
 			}
 			.hero-content { flex: 3; }
-			.hero-image { 
-				flex: 2; 
+			.hero-image {
+				flex: 2;
 				text-align: center;
                 position: relative;
 			}
@@ -104,7 +104,7 @@ const formatAuthor = (auth: Author) => {
 				border: 6px solid var(--color-bg);
 				box-shadow: 0 0 0 1px var(--color-border), var(--shadow-lg);
 			}
-            
+
             .pub-mini-item {
                 margin-bottom: 1.5rem;
                 padding-bottom: 1.5rem;

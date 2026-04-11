@@ -1,11 +1,11 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import { SITE_TITLE } from '../consts';
-import AuthorLink from '../components/AuthorLink.astro';
-import bibFileRaw from '../data/publications.bib?raw';
-import { getLangFromUrl, useTranslations } from '../i18n/utils';
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { SITE_TITLE } from '../../consts';
+import AuthorLink from '../../components/AuthorLink.astro';
+import bibFileRaw from '../../data/publications.bib?raw';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -33,11 +33,11 @@ function parseBibTeX(input: string): BibEntry[] {
 
         const keyMatch = body.match(/^\s*([^,]+),/);
         const key = keyMatch ? keyMatch[1].trim() : 'unknown';
-        
+
         const fields: Record<string, string> = { title: "Untitled", year: "0000" };
-        
+
         const fieldRegex = /(\w+)\s*=\s*(?:\{((?:[^{}]|{[^{}]*})*)\}|"((?:[^"]|\\")*)"|(\d+))/g;
-        
+
         let match;
         while ((match = fieldRegex.exec(body)) !== null) {
             const fieldKey = match[1].toLowerCase();
@@ -84,14 +84,14 @@ const formatAuthor = (auth: Author) => {
 		<main>
 			<h1>Publications</h1>
 			<p>Selected peer-reviewed publications.</p>
-			
+
 			<div class="publication-list">
 				{publications.map((entry) => (
 					<article class="publication-item">
 						<span class="pub-title">
                             {entry.fields.title.replace(/[{}]/g, '')}
                         </span>
-						
+
 						<div class="pub-authors">
 							{entry.authors && entry.authors.map((auth, i) => (
 								<>
@@ -100,13 +100,13 @@ const formatAuthor = (auth: Author) => {
                                 </>
 							))}
 						</div>
-						
+
 						<div class="pub-venue">
                             {
-                                (entry.fields.journal || 
-                                entry.fields.booktitle || 
-                                entry.fields.publisher || 
-                                entry.fields.school || 
+                                (entry.fields.journal ||
+                                entry.fields.booktitle ||
+                                entry.fields.publisher ||
+                                entry.fields.school ||
                                 "Preprint").replace(/[{}]/g, '')
                             }
                             {entry.fields.year && <span> ({entry.fields.year})</span>}
@@ -122,9 +122,9 @@ const formatAuthor = (auth: Author) => {
                                     URL
                                 </a>
                             ) : null}
-                            
+
 							{entry.fields.doi && <a href={`https://doi.org/${entry.fields.doi}`} target="_blank" style="margin-left: 0.5rem;">DOI</a>}
-                            
+
                             <details name="bibtex" style="display: inline-block; margin-left: 0.5rem;">
                                 <summary style="font-size: 0.8rem; cursor: pointer; color: var(--color-accent);">BibTeX</summary>
                                 <div class="bibtex-panel" style="position: absolute; background-color: var(--color-bg-offset); border: 1px solid var(--color-border); color: var(--color-text-main); padding: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-radius: 8px; z-index: 10; width: 300px; max-height: 250px; overflow-y: auto; overflow-x: auto; margin-top: 0.5rem;">
