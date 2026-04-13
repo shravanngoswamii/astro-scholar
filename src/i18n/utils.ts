@@ -33,6 +33,11 @@ const localeMap: Record<string, string> = {
   en: 'en-US',
   hi: 'hi-IN',
   ja: 'ja-JP',
+  ko: 'ko-KR',
+  'zh-cn': 'zh-CN',
+  'zh-tw': 'zh-TW',
+  ru: 'ru-RU',
+  el: 'el-GR',
 };
 
 export function getLocaleForDate(lang: string): string {

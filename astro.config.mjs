@@ -28,11 +28,16 @@ export default defineConfig({
 		inlineStylesheets: 'always',
 	},
 	i18n: {
-		locales: ["en", "hi", "ja"],
+		locales: ["en", "hi", "ja", "ko", "zh-cn", "zh-tw", "ru", "el"],
 		defaultLocale: "en",
 		fallback: {
 			hi: "en",
 			ja: "en",
+			ko: "en",
+			"zh-cn": "en",
+			"zh-tw": "en",
+			ru: "en",
+			el: "en",
 		},
 		routing: {
 			prefixDefaultLocale: false,
