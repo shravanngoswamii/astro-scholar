@@ -28,3 +28,25 @@ export function useTranslatedPath(lang: keyof typeof ui) {
     return translated.replace(/\/+/g, '/');
   }
 }
+
+const localeMap: Record<string, string> = {
+  en: 'en-US',
+  hi: 'hi-IN',
+  ja: 'ja-JP',
+};
+
+export function getLocaleForDate(lang: string): string {
+  return localeMap[lang] || 'en-US';
+}
+
+export function getPostsForLang(posts: { id: string }[], lang: string) {
+  if (lang === defaultLang) {
+    return posts.filter(post => !post.id.includes('/'));
+  }
+  return posts.filter(post => post.id.startsWith(`${lang}/`));
+}
+
+export function stripLangPrefix(id: string, lang: string): string {
+  if (lang === defaultLang) return id;
+  return id.replace(`${lang}/`, '');
+}
