@@ -102,7 +102,7 @@ public/
 
 ## Internationalization (i18n)
 
-The site supports multiple languages out of the box. Currently available: **English** (default), **Hindi**, and **Japanese**. For languages not natively supported, a Google Translate fallback is available.
+The site supports multiple languages out of the box. Currently available: **English** (default), **Hindi**, **Japanese**, **Korean**, **Simplified Chinese**, **Traditional Chinese**, **Russian**, and **Greek**. For languages not natively supported, a Google Translate fallback is available.
 
 ### How It Works
 
@@ -114,32 +114,32 @@ The site supports multiple languages out of the box. Currently available: **Engl
 
 ### Adding a New Language
 
-Example: adding Korean (`ko`).
+Example: adding Portuguese (`pt`).
 
 1. **Add locale to config** (`astro.config.mjs`):
    ```js
    i18n: {
-     locales: ["en", "hi", "ja", "ko"],
-     fallback: { hi: "en", ja: "en", ko: "en" },
+     locales: ["en", "hi", "ja", "ko", "zh-cn", "zh-tw", "ru", "el", "pt"],
+     fallback: { ..., pt: "en" },
    }
    ```
 
 2. **Add language entry** (`src/i18n/ui.ts`):
    ```ts
    export const languages = {
-     en: 'English', hi: 'हिन्दी', ja: '日本語', ko: '한국어',
+     ..., pt: 'Português',
    };
    ```
 
 3. **Add all translation keys** in `ui.ts` under a new `ko: { ... }` block. Copy the English keys and translate each value.
 
-4. **Create translated about page**: `src/pages/ko/about.astro`
+4. **Create translated about page**: `src/pages/pt/about.astro`
 
 5. **Create blog route pages**:
-   - `src/pages/ko/blog/[...page].astro` (copy from `hi/blog/[...page].astro`, change `'hi/'` to `'ko/'`)
-   - `src/pages/ko/blog/[...slug].astro` (copy from `hi/blog/[...slug].astro`, change `'hi/'` to `'ko/'`)
+   - `src/pages/pt/blog/[...page].astro` (copy from `hi/blog/[...page].astro`, change `'hi/'` to `'pt/'`)
+   - `src/pages/pt/blog/[...slug].astro` (copy from `hi/blog/[...slug].astro`, change `'hi/'` to `'pt/'`)
 
-6. **Translate blog posts**: Create `src/content/blog/ko/` with translated `.md` files (same filenames as English)
+6. **Translate blog posts**: Create `src/content/blog/pt/` with translated `.md` files (same filenames as English)
 
 7. **Build and test**: `npm run build && npm run preview`
 
